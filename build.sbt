@@ -48,7 +48,7 @@ lazy val commonSettings =
   Seq(
     scalaVersion in ThisBuild := "2.12.2",
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
-    organization := "com.wegtam.tensei",
+    organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
     scalacOptions ++= Seq(
       "-deprecation",
