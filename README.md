@@ -5,3 +5,8 @@ Web Service.
 
 The documentation for the AMWS is available at: https://developer.amazonservices.com/
 
+## Getting started
+
+For development and testing you need to install [sbt](http://www.scala-sbt.org/).
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details howto to contribute
+to the project.
