@@ -1,5 +1,7 @@
 package com.wegtam.amws.common
 
+import java.nio.charset.StandardCharsets
+
 import scala.util.Try
 
 object Config {
@@ -21,6 +23,17 @@ object Config {
     */
   def getAuthToken(cfg: com.typesafe.config.Config): Option[String] =
     Try(cfg.getString("amws.auth-token")).toOption
+
+  /**
+    * Return the secret key for the amazon mws api from the configuration.
+    *
+    * @param cfg The configuration.
+    * @return An array of bytes holding the key which may be empty.
+    */
+  def getSecretKey(cfg: com.typesafe.config.Config): Array[Byte] =
+    Try(cfg.getString("amws.secret-key")).toOption
+      .map(_.getBytes(StandardCharsets.UTF_8))
+      .getOrElse(Array.empty)
 
   /**
     * Return the seller id from the configuration.
