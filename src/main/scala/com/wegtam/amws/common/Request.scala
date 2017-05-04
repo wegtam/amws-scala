@@ -32,21 +32,23 @@ object Request {
     * @see http://docs.developer.amazonservices.com/en_US/dev_guide/DG_RequiredRequestParameters.html
     *
     * @param accessKeyId The AWSAccessKeyId that you received when you registered for Amazon MWS.
-    * @param authToken   The authorization token that you received when you registered for Amazon MWS.
+    * @param authToken   The optional authorization token that you received when you registered for Amazon MWS.
     * @param sellerId    The seller or merchant identifier that you received when you registered for Amazon MWS.
     * @param version     The version of the API section being called.
     * @return A map of parameter names and values.
     */
   def buildBaseRequest(accessKeyId: ParameterValue,
-                       authToken: ParameterValue,
+                       authToken: Option[ParameterValue],
                        sellerId: ParameterValue,
-                       version: ApiVersion): RequestParameters =
-    Map(
+                       version: ApiVersion): RequestParameters = {
+    val a: RequestParameters =
+      authToken.fold(Map.empty[ParameterName, ParameterValue])(t => Map("MWSAuthToken" -> t))
+    a ++ Map(
       "AWSAccessKeyId" -> accessKeyId,
-      "MWSAuthToken"   -> authToken,
       "SellerId"       -> sellerId,
       "Version"        -> version
     )
+  }
 
   /**
     * Use the given base url and secret api key with the provided request

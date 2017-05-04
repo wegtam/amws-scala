@@ -15,17 +15,17 @@ class RequestTest extends WordSpec with MustMatchers with PropertyChecks {
     "include AWSAccessKeyId" in {
       val m = Request.buildBaseRequest(
         accessKeyId = "KEY",
-        authToken = "TOKEN",
+        authToken = None,
         sellerId = "SELLERID",
         version = "VERSION"
       )
       m.get("AWSAccessKeyId") must contain("KEY")
     }
 
-    "include MWSAuthToken" in {
+    "include MWSAuthToken if present" in {
       val m = Request.buildBaseRequest(
         accessKeyId = "KEY",
-        authToken = "TOKEN",
+        authToken = Option("TOKEN"),
         sellerId = "SELLERID",
         version = "VERSION"
       )
@@ -35,7 +35,7 @@ class RequestTest extends WordSpec with MustMatchers with PropertyChecks {
     "include SellerId" in {
       val m = Request.buildBaseRequest(
         accessKeyId = "KEY",
-        authToken = "TOKEN",
+        authToken = None,
         sellerId = "SELLERID",
         version = "VERSION"
       )
@@ -45,7 +45,7 @@ class RequestTest extends WordSpec with MustMatchers with PropertyChecks {
     "include Version" in {
       val m = Request.buildBaseRequest(
         accessKeyId = "KEY",
-        authToken = "TOKEN",
+        authToken = None,
         sellerId = "SELLERID",
         version = "VERSION"
       )
@@ -57,7 +57,7 @@ class RequestTest extends WordSpec with MustMatchers with PropertyChecks {
     "create a signed query string" in {
       val base = Request.buildBaseRequest(
         accessKeyId = "0PExampleR2",
-        authToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE",
+        authToken = Option("amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE"),
         sellerId = "A1ExampleE6",
         version = "2009-01-01"
       )
