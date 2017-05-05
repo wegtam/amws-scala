@@ -2,7 +2,7 @@ package com.wegtam.amws.reports
 
 import java.time.OffsetDateTime
 
-import com.wegtam.amws.common.Action
+import com.wegtam.amws.common.{ Action, MarketPlace }
 import com.wegtam.amws.common.Request.{ ParameterValue, RequestParameters }
 
 import scala.collection.immutable.Seq
@@ -51,6 +51,15 @@ object Actions {
     * operation.
     */
   case object GetReportRequestList extends Action {
+    final val DEFAULT_PAGE_SIZE = 50
+
+    def buildRequest(baseR: RequestParameters)(m: MarketPlace): RequestParameters =
+      baseR ++ Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> m.toParameterValue,
+        "MaxCount"    -> DEFAULT_PAGE_SIZE.toString
+      )
+
     override def toParameterValue: ParameterValue = "GetReportRequestList"
   }
 
@@ -84,6 +93,15 @@ object Actions {
     * Returns a list of reports that were created in the previous 90 days.
     */
   case object GetReportList extends Action {
+    final val DEFAULT_PAGE_SIZE = 50
+
+    def buildRequest(baseR: RequestParameters)(m: MarketPlace): RequestParameters =
+      baseR ++ Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> m.toParameterValue,
+        "MaxCount"    -> DEFAULT_PAGE_SIZE.toString
+      )
+
     override def toParameterValue: ParameterValue = "GetReportList"
   }
 
@@ -110,6 +128,14 @@ object Actions {
     * returned report body.
     */
   case object GetReport extends Action {
+
+    def buildRequest(baseR: RequestParameters)(m: MarketPlace, rid: String): RequestParameters =
+      baseR ++ Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> m.toParameterValue,
+        "ReportId"    -> rid
+      )
+
     override def toParameterValue: ParameterValue = "GetReport"
   }
 
