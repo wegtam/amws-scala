@@ -47,7 +47,8 @@ lazy val library =
 lazy val settings =
   commonSettings ++
   gitSettings ++
-  headerSettings
+  headerSettings ++
+  publishSettings
 
 lazy val commonSettings =
   Seq(
@@ -89,4 +90,15 @@ lazy val gitSettings =
 lazy val headerSettings =
   Seq(
     headerLicense := Some(HeaderLicense.MPLv2("2017", "Contributors as noted in the AUTHORS.md file"))
+  )
+
+lazy val publishSettings =
+  Seq(
+    bintrayOrganization := Option("wegtam"),
+    bintrayPackage := "amws-scala",
+    bintrayReleaseOnPublish in ThisBuild := false,
+    bintrayRepository := "free",
+    licenses += ("MPL-2.0", url("https://www.mozilla.org/en-US/MPL/2.0/")),
+    pomIncludeRepository := (_ => false),
+    publish := (publish dependsOn (test in Test)).value
   )
