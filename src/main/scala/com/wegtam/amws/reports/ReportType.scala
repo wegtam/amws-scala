@@ -1,6 +1,16 @@
+/*
+ * Copyright (c) 2017 Contributors as noted in the AUTHORS.md file
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 package com.wegtam.amws.reports
 
 import com.wegtam.amws.common.Request.ParameterValue
+
+import scala.collection.immutable.Seq
 
 /**
   * An enumeration of the types of reports that can be requested from
@@ -18,10 +28,42 @@ sealed trait ReportType {
 
 }
 
+object ReportType {
+  // A list of all available report types. New report types must be added here!
+  final val ALL
+    : Seq[ReportType] = ListingReports.ALL ++ OrderReports.ALL ++ OrderTracking.ALL ++ PendingOrders.ALL ++ Performance.ALL ++ Settlement.ALL ++ SalesTax.ALL ++ BrowseTree.ALL
+
+  /**
+    * Return the report type described by the given parameter value.
+    *
+    * @param v A string representation of the report type.
+    * @return The appropriate report type.
+    */
+  @throws[NoSuchElementException](
+    cause = "The given representation is not included in the list of report types."
+  )
+  def fromParameterValue(v: ParameterValue): Option[ReportType] = ALL.find(_.toParameterValue == v)
+
+}
+
 /**
   * Listing Reports
   */
 object ListingReports {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    Inventory,
+    AllListings,
+    ActiveListings,
+    InactiveListings,
+    OpenListings,
+    OpenListingsLite,
+    OpenListingsLiter,
+    CanceledListings,
+    SoldListings,
+    ListingQualityAndSuppressedListings
+  )
 
   /**
     * Tab-delimited flat file open listings report that contains the SKU,
@@ -112,6 +154,14 @@ object ListingReports {
   * Order Reports
   */
 object OrderReports {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    Unshipped,
+    ScheduledXml,
+    RequestedOrScheduledFlatFile,
+    FlatFile
+  )
 
   /**
     * Tab-delimited flat file report that contains only orders that are not
@@ -175,6 +225,14 @@ object OrderReports {
   * Order Tracking Reports
   */
 object OrderTracking {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    FlatFileByLastUpdate,
+    FlatFileByOrderDate,
+    XmlByLastUpdate,
+    XmlByOrderDate
+  )
 
   /**
     * Tab-delimited flat file report that shows all orders updated in the
@@ -215,6 +273,13 @@ object OrderTracking {
   * Pending Order Reports
   */
 object PendingOrders {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    FlatFile,
+    Xml,
+    ConvergedFlatFile
+  )
 
   /**
     * Tab-delimited flat file report that can be requested or scheduled
@@ -246,6 +311,12 @@ object PendingOrders {
   * Performance Reports
   */
 object Performance {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    FlatFile,
+    XmlCustomerMetrics
+  )
 
   /**
     * Tab-delimited flat file that returns negative and neutral feedback
@@ -270,6 +341,13 @@ object Performance {
   * Settlement Reports
   */
 object Settlement {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    FlatFile,
+    Xml,
+    FlatFileV2
+  )
 
   /**
     * Tab-delimited flat file settlement report that is automatically
@@ -306,6 +384,11 @@ object Settlement {
   * Sales Tax Reports
   */
 object SalesTax {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    SalesTax
+  )
 
   /**
     * Tab-delimited flat file for tax-enabled US sellers. Content updated
@@ -325,6 +408,11 @@ object SalesTax {
   * Browse Tree Reports
   */
 object BrowseTree {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    BrowseTree
+  )
 
   /**
     * XML report that provides browse tree hierarchy information and node

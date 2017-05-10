@@ -12,6 +12,7 @@ lazy val amwsScala =
       libraryDependencies ++= Seq(
         library.akkaHttp,
         library.cats,
+        library.yaidom,
         library.scalaCheck      % Test,
         library.scalaTest       % Test
       ),
@@ -29,12 +30,14 @@ lazy val library =
       val cats            = "0.9.0"
       val scalaCheck      = "1.13.5"
       val scalaTest       = "3.0.3"
+      val yaidom          = "1.6.0"
     }
-    val akkaHttp        = "com.typesafe.akka" %% "akka-http"         % Version.akkaHttp
-    val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % Version.akkaHttp
-    val cats            = "org.typelevel"     %% "cats"              % Version.cats
-    val scalaCheck      = "org.scalacheck"    %% "scalacheck"        % Version.scalaCheck
-    val scalaTest       = "org.scalatest"     %% "scalatest"         % Version.scalaTest
+    val akkaHttp        = "com.typesafe.akka"   %% "akka-http"         % Version.akkaHttp
+    val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit" % Version.akkaHttp
+    val cats            = "org.typelevel"       %% "cats"              % Version.cats
+    val scalaCheck      = "org.scalacheck"      %% "scalacheck"        % Version.scalaCheck
+    val scalaTest       = "org.scalatest"       %% "scalatest"         % Version.scalaTest
+    val yaidom          = "eu.cdevreeze.yaidom" %% "yaidom"            % Version.yaidom
   }
 
 // *****************************************************************************
@@ -43,7 +46,8 @@ lazy val library =
 
 lazy val settings =
   commonSettings ++
-  gitSettings
+  gitSettings ++
+  headerSettings
 
 lazy val commonSettings =
   Seq(
@@ -82,3 +86,7 @@ lazy val gitSettings =
     git.useGitDescribe := true
   )
 
+lazy val headerSettings =
+  Seq(
+    headerLicense := Some(HeaderLicense.MPLv2("2017", "Contributors as noted in the AUTHORS.md file"))
+  )
