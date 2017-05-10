@@ -5,7 +5,7 @@
 lazy val amwsScala =
   project
     .in(file("."))
-    .enablePlugins(GitBranchPrompt, GitVersioning)
+    .enablePlugins(AutomateHeaderPlugin, GitBranchPrompt, GitVersioning)
     .settings(settings)
     .settings(
       name := "amws-scala",
