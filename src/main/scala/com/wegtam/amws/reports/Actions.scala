@@ -78,6 +78,14 @@ object Actions {
     * the value of `HasNext` was true in that previous request.
     */
   case object GetReportRequestListByNextToken extends Action {
+
+    def buildRequest(baseR: RequestParameters)(m: MarketPlace, nt: String): RequestParameters =
+      baseR ++ Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> m.toParameterValue,
+        "NextToken"   -> nt
+      )
+
     override def toParameterValue: ParameterValue =
       "GetReportRequestListByNextToken"
   }
@@ -120,6 +128,14 @@ object Actions {
     * previous call.
     */
   case object GetReportListByNextToken extends Action {
+
+    def buildRequest(baseR: RequestParameters)(m: MarketPlace, nt: String): RequestParameters =
+      baseR ++ Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> m.toParameterValue,
+        "NextToken"   -> nt
+      )
+
     override def toParameterValue: ParameterValue = "GetReportListByNextToken"
   }
 

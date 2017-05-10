@@ -30,7 +30,7 @@ import scala.util.Try
   * @param acknowledged     A Boolean value that indicates if the report was acknowledged by this call to the `UpdateReportAcknowledgements` operation. The value is `true` if the report was acknowledged; otherwise `false`.
   * @param acknowledgedDate The date the report was acknowledged.
   */
-case class ReportInfo(
+final case class ReportInfo(
     id: String,
     reportType: ReportType,
     requestId: String,
