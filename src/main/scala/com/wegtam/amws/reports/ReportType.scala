@@ -37,11 +37,8 @@ object ReportType {
     * Return the report type described by the given parameter value.
     *
     * @param v A string representation of the report type.
-    * @return The appropriate report type.
+    * @return An option to the appropriate report type.
     */
-  @throws[NoSuchElementException](
-    cause = "The given representation is not included in the list of report types."
-  )
   def fromParameterValue(v: ParameterValue): Option[ReportType] = ALL.find(_.toParameterValue == v)
 
 }

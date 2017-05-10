@@ -10,6 +10,8 @@ package com.wegtam.amws.reports
 
 import com.wegtam.amws.common.Request.ParameterValue
 
+import scala.collection.immutable.Seq
+
 /**
   * A report has a processing status.
   */
@@ -26,6 +28,19 @@ sealed trait ReportProcessingStatus {
 }
 
 object ReportProcessingStatus {
+  // A list of all report processing states.
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportProcessingStatus] =
+    Seq(Submitted, InProgress, Cancelled, Done, DoneNoData)
+
+  /**
+    * Return the processing status described by the given parameter value.
+    *
+    * @param v A string representation of a processing status.
+    * @return An option to the processing status.
+    */
+  def fromParameterValue(v: ParameterValue): Option[ReportProcessingStatus] =
+    ALL.find(_.toParameterValue == v)
 
   /**
     * The report has been submitted but no further processing has been done.
