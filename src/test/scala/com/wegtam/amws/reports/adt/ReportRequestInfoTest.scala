@@ -43,7 +43,7 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers {
           scheduled = false,
           submittedDate = OffsetDateTime.parse("2011-02-17T23:44:09+00:00"),
           status = ReportProcessingStatus.Done,
-          generatedReportId = "3538561173",
+          generatedReportId = Option("3538561173"),
           startedProcessingDate = Option(OffsetDateTime.parse("2011-02-17T23:44:43+00:00")),
           completedDate = Option(OffsetDateTime.parse("2011-02-17T23:44:48+00:00"))
         )
@@ -112,7 +112,7 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers {
             scheduled = false,
             submittedDate = OffsetDateTime.parse("2011-02-17T23:44:09+00:00"),
             status = ReportProcessingStatus.Done,
-            generatedReportId = "3538561173",
+            generatedReportId = Option("3538561173"),
             startedProcessingDate = Option(OffsetDateTime.parse("2011-02-17T23:44:43+00:00")),
             completedDate = Option(OffsetDateTime.parse("2011-02-17T23:44:48+00:00"))
           ),
@@ -124,7 +124,7 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers {
             scheduled = true,
             submittedDate = OffsetDateTime.parse("2011-02-17T23:44:09+00:00"),
             status = ReportProcessingStatus.Submitted,
-            generatedReportId = "3538561174",
+            generatedReportId = Option("3538561174"),
             startedProcessingDate = None,
             completedDate = None
           ),
@@ -136,12 +136,52 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers {
             scheduled = false,
             submittedDate = OffsetDateTime.parse("2011-02-17T23:44:11+00:00"),
             status = ReportProcessingStatus.InProgress,
-            generatedReportId = "3538561175",
+            generatedReportId = Option("3538561175"),
             startedProcessingDate = Option(OffsetDateTime.parse("2011-02-17T23:44:45+00:00")),
             completedDate = None
           )
         )
         ReportRequestInfo.fromXmlGetReportRequestListResponse(xml) mustEqual expected
+      }
+    }
+  }
+
+  "fromXmlRequestReportResponse" when {
+    "given valid xml" must {
+      "return the correct ReportRequestInfo" in {
+        val xml =
+          """
+            |<RequestReportResponse
+            |    xmlns="http://mws.amazonaws.com/doc/2009-01-01/">
+            |    <RequestReportResult>
+            |        <ReportRequestInfo>
+            |            <ReportRequestId>2291326454</ReportRequestId>
+            |            <ReportType>_GET_MERCHANT_LISTINGS_DATA_</ReportType>
+            |            <StartDate>2009-01-21T02:10:39+00:00</StartDate>
+            |            <EndDate>2009-02-13T02:10:39+00:00</EndDate>
+            |            <Scheduled>false</Scheduled>
+            |            <SubmittedDate>2009-02-20T02:10:39+00:00</SubmittedDate>
+            |            <ReportProcessingStatus>_SUBMITTED_</ReportProcessingStatus>
+            |        </ReportRequestInfo>
+            |    </RequestReportResult>
+            |    <ResponseMetadata>
+            |        <RequestId>88faca76-b600-46d2-b53c-0c8c4533e43a</RequestId>
+            |    </ResponseMetadata>
+            |</RequestReportResponse>
+          """.stripMargin
+        val expected = ReportRequestInfo(
+          id = "2291326454",
+          reportType = ListingReports.ActiveListings,
+          startDate = OffsetDateTime.parse("2009-01-21T02:10:39+00:00"),
+          endDate = OffsetDateTime.parse("2009-02-13T02:10:39+00:00"),
+          scheduled = false,
+          submittedDate = OffsetDateTime.parse("2009-02-20T02:10:39+00:00"),
+          status = ReportProcessingStatus.Submitted,
+          generatedReportId = None,
+          startedProcessingDate = None,
+          completedDate = None
+        )
+        ReportRequestInfo.fromXmlRequestReportResponse(xml) must contain(expected)
       }
     }
   }

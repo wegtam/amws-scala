@@ -41,7 +41,7 @@ final case class ReportRequestInfo(
     scheduled: Boolean,
     submittedDate: OffsetDateTime,
     status: ReportProcessingStatus,
-    generatedReportId: String,
+    generatedReportId: Option[String],
     startedProcessingDate: Option[OffsetDateTime],
     completedDate: Option[OffsetDateTime]
 )
@@ -67,7 +67,7 @@ object ReportRequestInfo {
       st <- ReportProcessingStatus.fromParameterValue(
         e.findChildElem(withLocalName("ReportProcessingStatus")).map(_.trimmedText).getOrElse("")
       )
-      rid <- e.findChildElem(withLocalName("GeneratedReportId")).map(_.trimmedText)
+      rid = e.findChildElem(withLocalName("GeneratedReportId")).map(_.trimmedText)
       spd = e.findChildElem(withLocalName("StartedProcessingDate")).map(_.trimmedText)
       epd = e.findChildElem(withLocalName("CompletedDate")).map(_.trimmedText)
     } yield
@@ -118,5 +118,20 @@ object ReportRequestInfo {
       } yield r
       it
     }
+  }
+
+  /**
+    * Parse the xml `RequestReportResponse` and return the [[ReportRequestInfo]].
+    *
+    * @param s A string containing the xml.
+    * @return An option to the report request information.
+    */
+  def fromXmlRequestReportResponse(s: String): Option[ReportRequestInfo] = {
+    val eo: Option[Elem] = for {
+      p <- Try(DocumentParserUsingSax.newInstance()).toOption
+      d <- Try(p.parse(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)))).toOption
+      e <- d.documentElement.findElem(withLocalName("ReportRequestInfo"))
+    } yield e
+    eo.flatMap(e => fromXmlElement(e))
   }
 }
