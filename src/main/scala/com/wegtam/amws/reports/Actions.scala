@@ -61,12 +61,15 @@ object Actions {
   case object GetReportRequestList extends Action {
     final val DEFAULT_PAGE_SIZE = 50
 
-    def buildRequest(baseR: RequestParameters)(m: MarketPlace): RequestParameters =
-      baseR ++ Map(
+    def buildRequest(baseR: RequestParameters)(m: MarketPlace,
+                                               rids: Seq[String]): RequestParameters = {
+      val r: RequestParameters = baseR ++ Map(
         "Action"      -> toParameterValue,
         "Marketplace" -> m.toParameterValue,
         "MaxCount"    -> DEFAULT_PAGE_SIZE.toString
       )
+      r ++ rids.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+    }
 
     override def toParameterValue: ParameterValue = "GetReportRequestList"
   }
