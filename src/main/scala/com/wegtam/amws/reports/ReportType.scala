@@ -33,8 +33,19 @@ sealed trait ReportType {
 
 object ReportType {
   // A list of all available report types. New report types must be added here!
-  final val ALL
-    : Seq[ReportType] = ListingReports.ALL ++ OrderReports.ALL ++ OrderTracking.ALL ++ PendingOrders.ALL ++ Performance.ALL ++ Settlement.ALL ++ SalesTax.ALL ++ BrowseTree.ALL
+  final val ALL: Seq[ReportType] = ListingReports.ALL ++
+  OrderReports.ALL ++
+  OrderTracking.ALL ++
+  PendingOrders.ALL ++
+  Performance.ALL ++
+  Settlement.ALL ++
+  FBASales.ALL ++
+  FBAInventory.ALL ++
+  FBAPayments.ALL ++
+  FBACustomerConcessions.ALL ++
+  FBARemovals.ALL ++
+  SalesTax.ALL ++
+  BrowseTree.ALL
 
   /**
     * Return the report type described by the given parameter value.
