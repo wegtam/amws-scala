@@ -11,8 +11,8 @@ package com.wegtam.amws.common
 import com.wegtam.amws.common.Request.ParameterValue
 
 /**
-  * A sealed trait for the API actions. Every defined api action
-  * has to extend this trait.
+  * A trait that must be extended by every implemented API action.
+  *
   */
 trait Action {
 

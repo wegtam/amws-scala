@@ -30,6 +30,7 @@ lazy val library =
       val cats            = "0.9.0"
       val scalaCheck      = "1.13.5"
       val scalaTest       = "3.0.3"
+      val shapeless       = "2.3.2"
       val yaidom          = "1.6.0"
     }
     val akkaHttp        = "com.typesafe.akka"   %% "akka-http"         % Version.akkaHttp
@@ -37,6 +38,7 @@ lazy val library =
     val cats            = "org.typelevel"       %% "cats"              % Version.cats
     val scalaCheck      = "org.scalacheck"      %% "scalacheck"        % Version.scalaCheck
     val scalaTest       = "org.scalatest"       %% "scalatest"         % Version.scalaTest
+    val shapeless       = "com.chuusai"         %% "shapeless"         % Version.shapeless
     val yaidom          = "eu.cdevreeze.yaidom" %% "yaidom"            % Version.yaidom
   }
 

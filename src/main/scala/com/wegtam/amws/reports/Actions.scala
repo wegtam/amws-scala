@@ -10,8 +10,8 @@ package com.wegtam.amws.reports
 
 import java.time.OffsetDateTime
 
-import com.wegtam.amws.common.{ Action, MarketPlace }
 import com.wegtam.amws.common.Request.{ ParameterValue, RequestParameters }
+import com.wegtam.amws.common.{ Action, MarketPlace }
 
 import scala.collection.immutable.Seq
 
@@ -33,21 +33,34 @@ object Actions {
     */
   case object RequestReport extends Action {
 
-    def buildRequest(baseR: RequestParameters)(
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param reportType   The type of the report that shall be created.
+      * @param startDate    The start of a date range used for selecting the data to report. Must be prior to or equal to the current time.
+      * @param endDate      The end of a date range used for selecting the data to report. Must be prior to or equal to the current time.
+      * @param marketplaces A list of one or more marketplace IDs for the marketplaces you are registered to sell in. The resulting report will include information for all marketplaces you specify.
+      * @return The request parameters needed to call the API action.
+      */
+    def buildRequestParameters(
         reportType: ReportType,
         startDate: Option[OffsetDateTime],
         endDate: Option[OffsetDateTime],
-        marketplaceIdList: Seq[String]
+        marketplaces: Seq[MarketPlace]
     ): RequestParameters = {
-      val ps = baseR + ("ReportType" -> reportType.toParameterValue) +
-      ("Action" -> toParameterValue) ++
-      marketplaceIdList.zipWithIndex.map(t => s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1)
+      val ps = Map(
+        "Action"     -> toParameterValue,
+        "ReportType" -> reportType.toParameterValue
+      ) ++ marketplaces.zipWithIndex.map(
+        t => s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
+      )
       val ps2 = startDate.fold(ps)(sd => ps + ("StartDate" -> sd.toString))
       val ps3 = endDate.fold(ps2)(ed => ps2 + ("EndDate"   -> ed.toString))
       ps3
     }
 
     override def toParameterValue: ParameterValue = "RequestReport"
+
   }
 
   /**
@@ -61,14 +74,44 @@ object Actions {
   case object GetReportRequestList extends Action {
     final val DEFAULT_PAGE_SIZE = 50
 
-    def buildRequest(baseR: RequestParameters)(m: MarketPlace,
-                                               rids: Seq[String]): RequestParameters = {
-      val r: RequestParameters = baseR ++ Map(
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param requestIds  A structured list of ReportRequestId values. '''If you pass in ReportRequestId values, other query conditions are ignored.'''
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @param processing  A structured list of report processing statuses by which to filter report requests.
+      * @param max         A non-negative integer that represents the maximum number of report requests to return. If you specify a number greater than 100, the request is rejected.
+      * @param from        The start of the date range used for selecting the data to report.
+      * @param to          The end of the date range used for selecting the data to report.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        requestIds: Seq[String],
+        reportTypes: Seq[ReportType] = Seq.empty,
+        processing: Seq[ReportProcessingStatus] = Seq.empty,
+        max: Int = DEFAULT_PAGE_SIZE,
+        from: Option[OffsetDateTime] = None,
+        to: Option[OffsetDateTime] = None
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
         "Action"      -> toParameterValue,
-        "Marketplace" -> m.toParameterValue,
-        "MaxCount"    -> DEFAULT_PAGE_SIZE.toString
+        "Marketplace" -> marketPlace.toParameterValue
       )
-      r ++ rids.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+      if (requestIds.isEmpty) {
+        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
+          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++
+        processing.zipWithIndex.map(
+          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++
+        Map("MaxCount" -> max.toString)
+        val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
+        to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
+      } else
+        r ++ requestIds.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
     }
 
     override def toParameterValue: ParameterValue = "GetReportRequestList"
@@ -82,11 +125,18 @@ object Actions {
     */
   case object GetReportRequestListByNextToken extends Action {
 
-    def buildRequest(baseR: RequestParameters)(m: MarketPlace, nt: String): RequestParameters =
-      baseR ++ Map(
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param nextToken   A string token returned in a previous call.
+      * @return The request parameters needed for the API action.
+      */
+    def buildRequestParameters(marketPlace: MarketPlace, nextToken: String): RequestParameters =
+      Map(
         "Action"      -> toParameterValue,
-        "Marketplace" -> m.toParameterValue,
-        "NextToken"   -> nt
+        "Marketplace" -> marketPlace.toParameterValue,
+        "NextToken"   -> nextToken
       )
 
     override def toParameterValue: ParameterValue =
@@ -98,6 +148,39 @@ object Actions {
     * Amazon MWS for processing.
     */
   case object GetReportRequestCount extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @param processing  A structured list of report processing statuses by which to filter report requests.
+      * @param from        The start of the date range used for selecting the data to report.
+      * @param to          The end of the date range used for selecting the data to report.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportTypes: Seq[ReportType] = Seq.empty,
+        processing: Seq[ReportProcessingStatus] = Seq.empty,
+        from: Option[OffsetDateTime] = None,
+        to: Option[OffsetDateTime] = None
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> marketPlace.toParameterValue
+      )
+      val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
+        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      ) ++
+      processing.zipWithIndex.map(
+        t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+      )
+      val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
+      to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
+    }
+
     override def toParameterValue: ParameterValue = "GetReportRequestCount"
   }
 
@@ -105,6 +188,44 @@ object Actions {
     * Cancels one or more report requests.
     */
   case object CancelReportRequests extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param requestIds  A structured list of ReportRequestId values. '''If you pass in ReportRequestId values, other query conditions are ignored.'''
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @param processing  A structured list of report processing statuses by which to filter report requests.
+      * @param from        The start of the date range used for selecting the data to report.
+      * @param to          The end of the date range used for selecting the data to report.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        requestIds: Seq[String],
+        reportTypes: Seq[ReportType] = Seq.empty,
+        processing: Seq[ReportProcessingStatus] = Seq.empty,
+        from: Option[OffsetDateTime] = None,
+        to: Option[OffsetDateTime] = None
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> marketPlace.toParameterValue
+      )
+      if (requestIds.isEmpty) {
+        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
+          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++
+        processing.zipWithIndex.map(
+          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+        )
+        val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
+        to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
+      } else
+        r ++ requestIds.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+    }
+
     override def toParameterValue: ParameterValue = "CancelReportRequests"
   }
 
@@ -114,14 +235,46 @@ object Actions {
   case object GetReportList extends Action {
     final val DEFAULT_PAGE_SIZE = 50
 
-    def buildRequest(baseR: RequestParameters)(m: MarketPlace,
-                                               rids: Seq[String]): RequestParameters = {
-      val r: RequestParameters = baseR ++ Map(
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @todo Add support for `Acknowledged` parameter.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param requestIds  A structured list of ReportRequestId values. '''If you pass in ReportRequestId values, other query conditions are ignored.'''
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @param processing  A structured list of report processing statuses by which to filter report requests.
+      * @param max         A non-negative integer that represents the maximum number of report requests to return. If you specify a number greater than 100, the request is rejected.
+      * @param from        The earliest date you are looking for.
+      * @param to          The most recent date you are looking for.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        requestIds: Seq[String],
+        reportTypes: Seq[ReportType] = Seq.empty,
+        processing: Seq[ReportProcessingStatus] = Seq.empty,
+        max: Int = DEFAULT_PAGE_SIZE,
+        from: Option[OffsetDateTime] = None,
+        to: Option[OffsetDateTime] = None
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
         "Action"      -> toParameterValue,
-        "Marketplace" -> m.toParameterValue,
-        "MaxCount"    -> DEFAULT_PAGE_SIZE.toString
+        "Marketplace" -> marketPlace.toParameterValue
       )
-      r ++ rids.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+      if (requestIds.isEmpty) {
+        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
+          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++
+        processing.zipWithIndex.map(
+          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++
+        Map("MaxCount" -> max.toString)
+        val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
+        to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
+      } else
+        r ++ requestIds.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
     }
 
     override def toParameterValue: ParameterValue = "GetReportList"
@@ -135,11 +288,18 @@ object Actions {
     */
   case object GetReportListByNextToken extends Action {
 
-    def buildRequest(baseR: RequestParameters)(m: MarketPlace, nt: String): RequestParameters =
-      baseR ++ Map(
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param nextToken   A string token returned in a previous call.
+      * @return The request parameters needed for the API action.
+      */
+    def buildRequestParameters(marketPlace: MarketPlace, nextToken: String): RequestParameters =
+      Map(
         "Action"      -> toParameterValue,
-        "Marketplace" -> m.toParameterValue,
-        "NextToken"   -> nt
+        "Marketplace" -> marketPlace.toParameterValue,
+        "NextToken"   -> nextToken
       )
 
     override def toParameterValue: ParameterValue = "GetReportListByNextToken"
@@ -150,6 +310,34 @@ object Actions {
     * with a status of `_DONE_` and that are available for download.
     */
   case object GetReportCount extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @param from        The earliest date you are looking for.
+      * @param to          The most recent date you are looking for.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportTypes: Seq[ReportType] = Seq.empty,
+        from: Option[OffsetDateTime] = None,
+        to: Option[OffsetDateTime] = None
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> marketPlace.toParameterValue
+      )
+      val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
+        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      )
+      val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
+      to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
+    }
+
     override def toParameterValue: ParameterValue = "GetReportCount"
   }
 
@@ -159,11 +347,21 @@ object Actions {
     */
   case object GetReport extends Action {
 
-    def buildRequest(baseR: RequestParameters)(m: MarketPlace, rid: String): RequestParameters =
-      baseR ++ Map(
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param reportId    A unique identifier of the report to download, obtained from the GetReportList operation or the GeneratedReportId of a ReportRequest.
+      * @return The request parameters needed for the API action.
+      */
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportId: String
+    ): RequestParameters =
+      Map(
         "Action"      -> toParameterValue,
-        "Marketplace" -> m.toParameterValue,
-        "ReportId"    -> rid
+        "Marketplace" -> marketPlace.toParameterValue,
+        "ReportId"    -> reportId
       )
 
     override def toParameterValue: ParameterValue = "GetReport"
@@ -174,6 +372,32 @@ object Actions {
     * specified report type.
     */
   case object ManageReportSchedule extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace  The marketplace of the report.
+      * @param reportType   A value of the ReportType that indicates the type of report to request.
+      * @param scheduleType A value of the ScheduleType that indicates how often a report request should be created.
+      * @param scheduleDate The date when the next report request is scheduled to be submitted.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportType: ReportType,
+        scheduleType: ScheduleType,
+        scheduleDate: Option[OffsetDateTime] = None
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> marketPlace.toParameterValue,
+        "ReportType"  -> reportType.toParameterValue,
+        "Schedule"    -> scheduleType.toParameterValue
+      )
+      scheduleDate.fold(r)(d => r + ("ScheduleDate" -> d.toString))
+    }
+
     override def toParameterValue: ParameterValue = "ManageReportSchedule"
   }
 
@@ -182,6 +406,28 @@ object Actions {
     * submitted to Amazon MWS for processing.
     */
   case object GetReportScheduleList extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportTypes: Seq[ReportType] = Seq.empty
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> marketPlace.toParameterValue
+      )
+      r ++ reportTypes.zipWithIndex.map(
+        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      )
+    }
+
     override def toParameterValue: ParameterValue = "GetReportScheduleList"
   }
 
@@ -200,6 +446,28 @@ object Actions {
     * submitted to Amazon MWS.
     */
   case object GetReportScheduleCount extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      *
+      * @param marketPlace The marketplace of the requested report.
+      * @param reportTypes A structured list of ReportType enumeration values.
+      * @return The request parameters needed for the API action.
+      */
+    @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportTypes: Seq[ReportType] = Seq.empty
+    ): RequestParameters = {
+      val r: RequestParameters = Map(
+        "Action"      -> toParameterValue,
+        "Marketplace" -> marketPlace.toParameterValue
+      )
+      r ++ reportTypes.zipWithIndex.map(
+        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      )
+    }
+
     override def toParameterValue: ParameterValue = "GetReportScheduleCount"
   }
 
@@ -207,6 +475,31 @@ object Actions {
     * Updates the acknowledged status of one or more reports.
     */
   case object UpdateReportAcknowledgements extends Action {
+
+    /**
+      * Create the request parameters needed for the API action.
+      * @param marketPlace  The marketplace of the reports.
+      * @param reportIds    A structured list of Report Ids. The maximum number of reports that can be specified is 100.
+      * @param acknowledged A Boolean value that indicates that you have received and stored a report. Specify true to set the acknowledged status of a report to true. Specify false to set the acknowledged status of a report to false.
+      * @return The request parameters needed for the API action.
+      */
+    @throws[IllegalArgumentException](
+      cause = "The maximum number of reports that can be specified is 100."
+    )
+    def buildRequestParameters(
+        marketPlace: MarketPlace,
+        reportIds: Seq[String],
+        acknowledged: Boolean
+    ): RequestParameters = {
+      require(reportIds.length <= 100,
+              "The maximum number of reports that can be specified is 100.")
+      Map(
+        "Action"       -> toParameterValue,
+        "Marketplace"  -> marketPlace.toParameterValue,
+        "Acknowledged" -> acknowledged.toString
+      ) ++ reportIds.zipWithIndex.map(t => s"ReportIdList.Id.${t._2 + 1}" -> t._1)
+    }
+
     override def toParameterValue: ParameterValue =
       "UpdateReportAcknowledgements"
   }

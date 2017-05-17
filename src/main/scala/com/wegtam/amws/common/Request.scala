@@ -45,10 +45,10 @@ object Request {
     * @param version     The version of the API section being called.
     * @return A map of parameter names and values.
     */
-  def buildBaseRequest(accessKeyId: ParameterValue,
-                       authToken: Option[ParameterValue],
-                       sellerId: ParameterValue,
-                       version: ApiVersion): RequestParameters = {
+  def buildBaseRequestParameters(accessKeyId: ParameterValue,
+                                 authToken: Option[ParameterValue],
+                                 sellerId: ParameterValue,
+                                 version: ApiVersion): RequestParameters = {
     val a: RequestParameters =
       authToken.fold(Map.empty[ParameterName, ParameterValue])(t => Map("MWSAuthToken" -> t))
     a ++ Map(
@@ -63,11 +63,11 @@ object Request {
     * parameters to create a valid query string including signature for the
     * amazon api.
     *
-    * The `Timestamp` field will be set (overriding a previously set value).
+    * <p><strong>Note:</strong> The `Timestamp` field will be set to the current time (overriding a previously set value).</p>
     *
-    * @param baseUrl The base url of the service.
+    * @param baseUrl The base url of the service for the [[com.wegtam.amws.common.Region]] with appended path if needed.
     * @param key     The secret amazon key used to sign the requests.
-    * @param ps      The request parameters.
+    * @param ps      The request parameters which should be created by merging the base request parameters with the result of `buildRequestParameters` of the desired action.
     * @return Either an error or a usable query string for a request to the amazon api.
     */
   def buildAndSignQueryString(baseUrl: URI,
@@ -82,9 +82,9 @@ object Request {
       }
       data <- Try {
         s"""|POST
-           |${baseUrl.getHost.toLowerCase(Locale.ROOT)}
-           |${baseUrl.getPath}
-           |$qstr""".stripMargin
+            |${baseUrl.getHost.toLowerCase(Locale.ROOT)}
+            |${baseUrl.getPath}
+            |$qstr""".stripMargin
       }
       sign <- SignRequest.sign(key, data.getBytes(StandardCharsets.UTF_8))
       encs  = urlEncode(sign)
