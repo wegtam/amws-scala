@@ -14,7 +14,10 @@ import scala.collection.immutable.Seq
 
 /**
   * An enumeration of the types of reports that can be requested from
-  * Amazon MWS.
+  * Amazon MWS. The report types are grouped logically into objects and
+  * named to ease finding them in the AMWS documentation.
+  *
+  * @see http://docs.developer.amazonservices.com/en_US/reports/Reports_ReportType.html
   */
 sealed trait ReportType {
 
@@ -375,6 +378,464 @@ object Settlement {
     override def toParameterValue: ParameterValue = "_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_"
   }
 
+}
+
+/**
+  * Fulfillment By Amazon (FBA) Sales Reports
+  */
+object FBASales {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    FulfilledShipments,
+    FlatFileAllOrdersByLastUpdate,
+    FlatFileAllOrdersByOrderDate,
+    XmlAllOrdersByLastUpdate,
+    XmlAllOrdersByOrderDate,
+    CustomerShipmentSales,
+    Promotions,
+    CustomerTaxes
+  )
+
+  /**
+    * Tab-delimited flat file. Contains detailed order/shipment/item
+    * information including price, address, and tracking data. You can
+    * request up to one month of data in a single report. Content updated
+    * near real-time in Europe (EU), Japan, and North America (NA). In
+    * China, content updated daily. For FBA sellers only. For Marketplace
+    * and Seller Central sellers.
+    *
+    * <p><strong>Note:</strong> In Japan, EU, and NA, in most cases, there
+    * will be a delay of approximately one to three hours from the time a
+    * fulfillment order ships and the time the items in the fulfillment
+    * order appear in the report. In some rare cases there could be a delay
+    * of up to 24 hours.</p>
+    */
+  case object FulfilledShipments extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Returns all orders updated in the specified
+    * date range regardless of fulfillment channel or shipment status. This
+    * report is intended for order tracking, not to drive your fulfillment
+    * process; it does not include customer identifying information and
+    * scheduling is not supported. For all sellers.
+    */
+  case object FlatFileAllOrdersByLastUpdate extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
+  }
+
+  /**
+    * Tab-delimited flat file. Returns all orders placed in the specified
+    * date range regardless of fulfillment channel or shipment status. This
+    * report is intended for order tracking, not to drive your fulfillment
+    * process; it does not include customer identifying information and
+    * scheduling is not supported. For all sellers.
+    */
+  case object FlatFileAllOrdersByOrderDate extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_"
+  }
+
+  /**
+    * XML file order report that returns all orders updated in the
+    * specified date range regardless of fulfillment channel or shipment
+    * status. This report is intended for order tracking, not to drive your
+    * fulfillment process; it does not include customer identifying
+    * information and scheduling is not supported. For all sellers.
+    */
+  case object XmlAllOrdersByLastUpdate extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
+  }
+
+  /**
+    * XML file order report that returns all orders placed in the specified
+    * date range regardless of fulfillment channel or shipment status. This
+    * report is intended for order tracking, not to drive your fulfillment
+    * process; it does not include customer identifying information and
+    * scheduling is not supported. For all sellers.
+    */
+  case object XmlAllOrdersByOrderDate extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains condensed item level data on
+    * shipped FBA customer orders including price, quantity, and ship to
+    * location. Content updated near real-time in Europe (EU), Japan, and
+    * North America (NA). In China, content updated daily. For FBA sellers
+    * only. For Marketplace and Seller Central sellers.
+    *
+    * <p><strong>Note:</strong> In Japan, EU, and NA, in most cases, there
+    * will be a delay of approximately one to three hours from the time a
+    * fulfillment order ships and the time the items in the fulfillment
+    * order appear in the report. In some rare cases there could be a delay
+    * of up to 24 hours.</p>
+    */
+  case object CustomerShipmentSales extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_SALES_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains promotions applied to FBA customer
+    * orders sold through Amazon; e.g. Super Saver Shipping. Content
+    * updated daily. This report is only available to FBA sellers in the
+    * North America (NA) region. For Marketplace and Seller Central sellers.
+    */
+  case object Promotions extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_PROMOTION_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file for tax-enabled US sellers. This report
+    * contains data through February 28, 2013. All new transaction data can
+    * be found in the [[com.wegtam.amws.reports.SalesTax.SalesTax]] Report.
+    * For FBA sellers only. For Marketplace and Seller Central sellers.
+    */
+  case object CustomerTaxes extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_CUSTOMER_TAXES_DATA_"
+  }
+}
+
+/**
+  * Fulfillment By Amazon (FBA) Inventory Reports
+  */
+object FBAInventory {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    AmazonFulfilledInventory,
+    MultiCountryInventory,
+    DailyInventoryHistory,
+    MonthlyInventoryHistory,
+    ReceivedInventory,
+    ReservedInventory,
+    InventoryEventDetails,
+    InventoryAdjustments,
+    InventoryHealth,
+    ManageInventory,
+    ManageInventoryArchived,
+    CrossBorderInventoryMovement,
+    RestockInventory,
+    InboundPerformance,
+    StrandedInventory,
+    BulkFixStrandedInventory,
+    InventoryAge,
+    ManageExcessInventory
+  )
+
+  /**
+    * Tab-delimited flat file. Content updated in near real-time. For FBA
+    * sellers only. For Marketplace and Seller Central sellers.
+    */
+  case object AmazonFulfilledInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_AFN_INVENTORY_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains quantity available for local
+    * fulfillment by country, helping Multi-Country Inventory sellers in
+    * Europe track their FBA inventory. Content updated in near-real time.
+    * This report is only available to FBA sellers in European (EU)
+    * marketplaces. For Seller Central sellers.
+    */
+  case object MultiCountryInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_AFN_INVENTORY_DATA_BY_COUNTRY_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains historical daily snapshots of your
+    * available inventory in Amazon’s fulfillment centers including
+    * quantity, location and disposition. Content updated daily. For FBA
+    * sellers only. For Marketplace and Seller Central sellers.
+    */
+  case object DailyInventoryHistory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_CURRENT_INVENTORY_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains historical monthly snapshots of
+    * your available inventory in Amazon’s fulfillment centers including
+    * average and end-of-month quantity, location and disposition. Content
+    * updated daily. For FBA sellers only. For Marketplace and Seller
+    * Central sellers.
+    */
+  case object MonthlyInventoryHistory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_MONTHLY_INVENTORY_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains inventory that has completed the
+    * receive process at Amazon’s fulfillment centers. Content updated
+    * daily. For FBA sellers only. For Marketplace and Seller Central
+    * sellers.
+    */
+  case object ReceivedInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_INVENTORY_RECEIPTS_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Provides data about the number of reserved
+    * units in your inventory. Content updated in near real-time. For FBA
+    * sellers only. For Marketplace and Seller Central sellers.
+    */
+  case object ReservedInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_RESERVED_INVENTORY_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains history of inventory events (e.g.
+    * receipts, shipments, adjustments etc.) by SKU and Fulfillment Center.
+    * Content updated daily. For FBA sellers only. For Marketplace and
+    * Seller Central sellers.
+    */
+  case object InventoryEventDetails extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_INVENTORY_SUMMARY_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains corrections and updates to your
+    * inventory in response to issues such as damage, loss, receiving
+    * discrepancies, etc. Content updated daily. For FBA sellers only.
+    * For Marketplace and Seller Central sellers.
+    */
+  case object InventoryAdjustments extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_INVENTORY_ADJUSTMENTS_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains information about inventory age,
+    * condition, sales volume, weeks of cover, and price. Content updated
+    * daily. For FBA Sellers only. For Marketplace and Seller Central
+    * sellers.
+    */
+  case object InventoryHealth extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_INVENTORY_HEALTH_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains current details of active (not
+    * archived) inventory including condition, quantity and volume. Content
+    * updated in near real-time. For FBA sellers only. For Marketplace and
+    * Seller Central sellers.
+    */
+  case object ManageInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains current details of all (including
+    * archived) inventory including condition, quantity and volume. Content
+    * updated in near real-time. For FBA sellers only. For Marketplace and
+    * Seller Central sellers.
+    */
+  case object ManageInventoryArchived extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_MYI_ALL_INVENTORY_DATA_"
+  }
+
+  /**
+    * Tab delimited flat file. Contains historical data of shipments that
+    * crossed country borders. These could be export shipments or shipments
+    * using Amazon's European Fulfillment Network (note that Amazon's
+    * European Fulfillment Network is for Seller Central sellers only).
+    * Content updated daily. For Marketplace and Seller Central sellers.
+    */
+  case object CrossBorderInventoryMovement extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_CROSS_BORDER_INVENTORY_MOVEMENT_DATA_"
+  }
+
+  /**
+    * Tab delimited flat file. Provides recommendations on products to
+    * restock, suggested order quantities, and reorder dates. For more
+    * information, see Restock Inventory Report. Content updated in near
+    * real-time. This report is only available to FBA sellers in the US
+    * marketplace.
+    */
+  case object RestockInventory extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_RESTOCK_INVENTORY_RECOMMENDATIONS_REPORT_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains inbound shipment problems by
+    * product and shipment. Content updated daily. For Marketplace and
+    * Seller Central sellers. This report is only available to FBA sellers.
+    */
+  case object InboundPerformance extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_INBOUND_NONCOMPLIANCE_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains a breakdown of inventory in
+    * stranded status, including recommended actions. Content updated in
+    * near real-time. This report is only available to FBA sellers in the
+    * US, India, and Japan marketplaces. For more information, see
+    * Stranded Inventory Report.
+    */
+  case object StrandedInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_STRANDED_INVENTORY_UI_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains a list of stranded inventory.
+    * Update the listing information in this report file and then submit
+    * the file using the Flat File Inventory Loader Feed
+    * (`_POST_FLAT_FILE_INVLOADER_DATA_`) of the Feeds API section. Content
+    * updated in near real-time. This report is only available to FBA
+    * sellers in the US, India, and Japan marketplaces. For more
+    * information, see Bulk Fix Stranded Inventory Report.
+    */
+  case object BulkFixStrandedInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_STRANDED_INVENTORY_LOADER_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Indicates the age of inventory, which helps
+    * sellers take action to avoid paying the Long Term Storage Fee.
+    * Content updated daily. This report is only available to FBA sellers
+    * in the US, India, and Japan marketplaces. For more information, see
+    * Inventory Age Report.
+    */
+  case object InventoryAge extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_INVENTORY_AGED_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains listings with excess inventory,
+    * which helps sellers take action to sell through faster. Content
+    * updated in near real-time. This report is only available to FBA
+    * sellers in the US, India, and Japan marketplaces. For more
+    * information, see Excess Inventory Report.
+    */
+  case object ManageExcessInventory extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_EXCESS_INVENTORY_DATA_"
+  }
+}
+
+/**
+  * Fulfillment By Amazon (FBA) Payments Reports
+  */
+object FBAPayments {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    FreePreview,
+    Reimbursements
+  )
+
+  /**
+    * Tab-delimited flat file. Contains the estimated Amazon Selling and
+    * Fulfillment Fees for your FBA inventory with active offers. The
+    * content is updated at least once every 72 hours. To successfully
+    * generate a report, specify the '''StartDate''' parameter of a minimum
+    * 72 hours prior to NOW and '''EndDate''' to NOW. For FBA sellers in
+    * the NA and EU only. For Marketplace and Seller Central sellers.
+    */
+  case object FreePreview extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_ESTIMATED_FBA_FEES_TXT_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains itemized details of your inventory
+    * reimbursements including the reason for the reimbursement. Content
+    * updated daily. For FBA sellers only. For Marketplace and Seller
+    * Central sellers.
+    */
+  case object Reimbursements extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_REIMBURSEMENTS_DATA_"
+  }
+}
+
+/**
+  * Fulfillment By Amazon (FBA) Customer Concessions Reports
+  */
+object FBACustomerConcessions {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    Returns,
+    Replacements
+  )
+
+  /**
+    * Tab-delimited flat file. Contains customer returned items received at
+    * an Amazon fulfillment center, including Return Reason and Disposition.
+    * Content updated daily. For FBA sellers only. For Marketplace and
+    * Seller Central sellers.
+    */
+  case object Returns extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. Contains replacements that have been issued
+    * to customers for completed orders. Content updated daily. For FBA
+    * sellers only. For Marketplace and Seller Central sellers. Available
+    * in the US and China (CN) only.
+    */
+  case object Replacements extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_CUSTOMER_SHIPMENT_REPLACEMENT_DATA_"
+  }
+}
+
+/**
+  * Fulfillment By Amazon (FBA) Removals Reports
+  */
+object FBARemovals {
+  // A list of all available report types. New report types must be added here!
+  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
+  final val ALL: Seq[ReportType] = Seq(
+    RecommendedRemoval,
+    RemovalOrderDetails,
+    RemovalShipmentDetails
+  )
+
+  /**
+    * Tab-delimited flat file. The report identifies sellable items that
+    * will be 365 days or older during the next Long-Term Storage cleanup
+    * event, if the report is generated within six weeks of the cleanup
+    * event date. The report includes both sellable and unsellable items.
+    * Content updated daily. For FBA sellers. For Marketplace and Seller
+    * Central sellers.
+    */
+  case object RecommendedRemoval extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FBA_RECOMMENDED_REMOVAL_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. This report contains all the removal orders,
+    * including the items in each removal order, placed during any given
+    * time period. This can be used to help reconcile the total number of
+    * items requested to be removed from an Amazon fulfillment center with
+    * the actual number of items removed along with the status of each item
+    * in the removal order. Content updated in near real-time. For FBA
+    * sellers. For Marketplace and Seller Central sellers.
+    */
+  case object RemovalOrderDetails extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_REMOVAL_ORDER_DETAIL_DATA_"
+  }
+
+  /**
+    * Tab-delimited flat file. This report provides shipment tracking
+    * information for all removal orders and includes the items that have
+    * been removed from an Amazon fulfillment center for either a single
+    * removal order or for a date range. This report will not include
+    * canceled returns or disposed items; it is only for shipment
+    * information. Content updated in near real-time. For FBA sellers.
+    * For Marketplace and Seller Central sellers.
+    */
+  case object RemovalShipmentDetails extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FBA_FULFILLMENT_REMOVAL_SHIPMENT_DETAIL_DATA_"
+  }
 }
 
 /**
