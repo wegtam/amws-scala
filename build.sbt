@@ -91,7 +91,7 @@ lazy val gitSettings =
 // License is set in publishSettings.
 lazy val headerSettings =
   Seq(
-    organizationName := "Wegtam GmbH",
+    organizationName := "Contributors as noted in the AUTHORS.md file",
     startYear := Some(2017),
   )
 
