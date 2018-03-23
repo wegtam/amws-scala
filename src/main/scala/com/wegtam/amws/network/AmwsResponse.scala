@@ -9,9 +9,9 @@
 package com.wegtam.amws.network
 
 /**
-  * A wrapper class that must be used for errors returned by an http request.
+  * A simple wrapper class that must be used to wrap a successful http
+  * response.
   *
-  * @param code    The http status code.
-  * @param details An optional detailed error description.
+  * @param body A string containing the data returned by the request.
   */
-final case class HttpError(code: Int, details: Option[String])
+final case class AmwsResponse(body: String)

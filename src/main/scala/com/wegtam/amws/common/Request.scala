@@ -8,7 +8,7 @@
 
 package com.wegtam.amws.common
 
-import java.net.{URI, URLEncoder}
+import java.net.{ URI, URLEncoder }
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.Locale
@@ -62,9 +62,7 @@ object Request {
     * @param ps      The request parameters which should be created by merging the base request parameters with the result of `buildRequestParameters` of the desired action.
     * @return Either an error or a usable query string for a request to the amazon api.
     */
-  def buildAndSignQueryString(baseUrl: URI,
-                              key: Array[Byte],
-                              ps: RequestParameters): Try[String] =
+  def buildAndSignQueryString(baseUrl: URI, key: Array[Byte], ps: RequestParameters): Try[String] =
     for {
       qstr <- Try {
         val encodedP =

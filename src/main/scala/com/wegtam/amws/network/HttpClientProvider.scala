@@ -20,12 +20,21 @@ import scala.language.higherKinds
 trait HttpClientProvider[M[_]] {
 
   /**
-    * Execute a POST http request on the given url using the provided query (data).
+    * Execute a GET http request on the given url using the provided query (data).
     *
-    * @param url   A url which is used for the request.
-    * @param query A string containing the query data which may be empty. <em>The string must be correctly built and signed as documented in the amazon api docs!</em>
+    * @param url     A url which is used for the request.
+    * @param payload The payload for the request.
     * @return The response of the query.
     */
-  def post(url: URI)(query: String): M[Response]
+  def get(url: URI)(payload: AmwsRequestPayload): M[AmwsRequestResult]
+
+  /**
+    * Execute a POST http request on the given url using the provided query (data).
+    *
+    * @param url     A url which is used for the request.
+    * @param payload The payload for the request.
+    * @return The response of the query.
+    */
+  def post(url: URI)(payload: AmwsRequestPayload): M[AmwsRequestResult]
 
 }

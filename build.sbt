@@ -53,7 +53,8 @@ lazy val settings =
   commonSettings ++
   gitSettings ++
   headerSettings ++
-  publishSettings
+  publishSettings ++
+  scalafmtSettings
 
 lazy val commonSettings =
   Seq(

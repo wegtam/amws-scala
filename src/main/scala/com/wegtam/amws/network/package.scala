@@ -11,6 +11,6 @@ package com.wegtam.amws
 package object network {
 
   // A type alias for working with http requests and responses.
-  type Response = Either[HttpError, HttpResponse]
+  type AmwsRequestResult = Either[AmwsError, AmwsResponse]
 
 }

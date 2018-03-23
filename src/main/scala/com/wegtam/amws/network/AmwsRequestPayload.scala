@@ -9,9 +9,9 @@
 package com.wegtam.amws.network
 
 /**
-  * A simple wrapper class that must be used to wrap a successful http
-  * response.
+  * A wrapper class for the data which is used as the payload for an
+  * http request.
   *
-  * @param body A string containing the data returned by the request.
+  * @param data An optional string containing the data.
   */
-final case class HttpResponse(body: String)
+final case class AmwsRequestPayload(data: Option[String])
