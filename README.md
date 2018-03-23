@@ -1,6 +1,7 @@
 # amws-scala - Scala Client for the Amazon Marketplace Web Service
 
 [![Build Status](https://travis-ci.org/wegtam/amws-scala.svg?branch=master)](https://travis-ci.org/wegtam/amws-scala)
+[ ![Download](https://api.bintray.com/packages/wegtam/free/amws-scala/images/download.svg) ](https://bintray.com/wegtam/free/amws-scala/_latestVersion)
 
 This software provides a simple scala client for the Amazon Marketplace 
 Web Service.
