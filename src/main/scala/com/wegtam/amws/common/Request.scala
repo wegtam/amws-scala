@@ -19,7 +19,6 @@ object Request {
   type ApiVersion        = String
   type ParameterName     = String
   type ParameterValue    = String
-  type QueryString       = String
   type RequestParameters = Map[ParameterName, ParameterValue]
 
   /**
@@ -65,7 +64,7 @@ object Request {
     */
   def buildAndSignQueryString(baseUrl: URI,
                               key: Array[Byte],
-                              ps: RequestParameters): Try[QueryString] =
+                              ps: RequestParameters): Try[String] =
     for {
       qstr <- Try {
         val encodedP =
