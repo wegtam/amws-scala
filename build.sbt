@@ -29,7 +29,7 @@ lazy val library =
       val akkaHttp        = "10.0.5"
       val cats            = "0.9.0"
       val scalaCheck      = "1.13.5"
-      val scalaTest       = "3.0.3"
+      val scalaTest       = "3.0.5"
       val shapeless       = "2.3.2"
       val yaidom          = "1.6.0"
     }
@@ -54,8 +54,8 @@ lazy val settings =
 
 lazy val commonSettings =
   Seq(
-    scalaVersion in ThisBuild := "2.12.2",
-    crossScalaVersions := Seq("2.11.11", "2.12.2"),
+    scalaVersion := "2.12.5",
+    crossScalaVersions := Seq("2.11.12", scalaVersion.value),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
     scalacOptions ++= Seq(
@@ -80,7 +80,6 @@ lazy val commonSettings =
     ),
     unmanagedSourceDirectories.in(Compile) := Seq(scalaSource.in(Compile).value),
     unmanagedSourceDirectories.in(Test) := Seq(scalaSource.in(Test).value),
-    incOptions := incOptions.value.withNameHashing(nameHashing = true),
     autoAPIMappings := true
   )
 
@@ -89,9 +88,11 @@ lazy val gitSettings =
     git.useGitDescribe := true
   )
 
+// License is set in publishSettings.
 lazy val headerSettings =
   Seq(
-    headerLicense := Some(HeaderLicense.MPLv2("2017", "Contributors as noted in the AUTHORS.md file"))
+    organizationName := "Wegtam GmbH",
+    startYear := Some(2017),
   )
 
 lazy val publishSettings =
@@ -100,7 +101,25 @@ lazy val publishSettings =
     bintrayPackage := "amws-scala",
     bintrayReleaseOnPublish in ThisBuild := false,
     bintrayRepository := "free",
+    developers += Developer(
+      "wegtam",
+      "Wegtam GmbH",
+      "tech@wegtam.com",
+      url("https://www.wegtam.com")
+    ),
     licenses += ("MPL-2.0", url("https://www.mozilla.org/en-US/MPL/2.0/")),
     pomIncludeRepository := (_ => false),
-    publish := (publish dependsOn (test in Test)).value
+    publish := (publish dependsOn (test in Test)).value,
+    publishArtifact in Test := false,
+    scmInfo := Option(
+      ScmInfo(
+        url("https://github.com/wegtam/amws-scala"),
+        "git@github.com:wegtam/amws-scala.git"
+      )
+    )
+  )
+
+lazy val scalafmtSettings =
+  Seq(
+    scalafmtOnCompile := true
   )
