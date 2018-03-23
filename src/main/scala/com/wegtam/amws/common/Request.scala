@@ -8,18 +8,11 @@
 
 package com.wegtam.amws.common
 
-import java.net.{ URI, URLEncoder }
+import java.net.{URI, URLEncoder}
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.Locale
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
-import akka.util.ByteString
-
-import scala.concurrent.Future
 import scala.util.Try
 
 object Request {
@@ -90,31 +83,6 @@ object Request {
       encs  = urlEncode(sign)
       query = s"$qstr&${SignRequest.SignatureRequestFieldName}=$encs"
     } yield query
-
-  /**
-    * Execute a request using the given base url and query string.
-    *
-    * An implicit materializer and system have to be in scope.
-    *
-    * @param baseUrl     The base url of the service to call.
-    * @param queryString An encoded and signed query string.
-    * @param mat         Implicit actor materializer for akka http.
-    * @param sys         Implicit actor system for akka http.
-    * @return A future holding the http response of the api.
-    */
-  def execute(baseUrl: URI, queryString: QueryString)(implicit mat: ActorMaterializer,
-                                                      sys: ActorSystem): Future[HttpResponse] =
-    Http().singleRequest(
-      HttpRequest(
-        method = HttpMethods.POST,
-        uri = baseUrl.toString,
-        entity = HttpEntity(
-          contentType =
-            ContentType(MediaTypes.`application/x-www-form-urlencoded`, HttpCharsets.`UTF-8`),
-          data = ByteString(queryString)
-        )
-      )
-    )
 
   /**
     * URL encode the given parameter value as expected by the amazon api.
