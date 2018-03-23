@@ -11,7 +11,8 @@ lazy val amwsScala =
       name := "amws-scala",
       libraryDependencies ++= Seq(
         library.akkaHttp,
-        library.cats,
+	library.akkaStream,
+        library.catsCore,
         library.yaidom,
         library.scalaCheck      % Test,
         library.scalaTest       % Test
@@ -26,16 +27,18 @@ lazy val amwsScala =
 lazy val library =
   new {
     object Version {
-      val akkaHttp        = "10.0.5"
-      val cats            = "0.9.0"
+      val akkaHttp        = "10.1.0"
+      val akkaStream      = "2.5.11"
+      val cats            = "1.1.0"
       val scalaCheck      = "1.13.5"
       val scalaTest       = "3.0.5"
       val shapeless       = "2.3.2"
-      val yaidom          = "1.6.0"
+      val yaidom          = "1.8.0-M2"
     }
     val akkaHttp        = "com.typesafe.akka"   %% "akka-http"         % Version.akkaHttp
     val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit" % Version.akkaHttp
-    val cats            = "org.typelevel"       %% "cats"              % Version.cats
+    val akkaStream      = "com.typesafe.akka"   %% "akka-stream"       % Version.akkaStream
+    val catsCore        = "org.typelevel"       %% "cats-core"         % Version.cats
     val scalaCheck      = "org.scalacheck"      %% "scalacheck"        % Version.scalaCheck
     val scalaTest       = "org.scalatest"       %% "scalatest"         % Version.scalaTest
     val shapeless       = "com.chuusai"         %% "shapeless"         % Version.shapeless
@@ -54,7 +57,7 @@ lazy val settings =
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.12.5",
+    scalaVersion in ThisBuild := "2.12.5",
     crossScalaVersions := Seq("2.11.12", scalaVersion.value),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
@@ -69,6 +72,7 @@ lazy val commonSettings =
       "-Xlint",
       "-Ydelambdafy:method",
       "-Yno-adapted-args",
+      "-Ypartial-unification",
       "-Ywarn-numeric-widen",
       "-Ywarn-unused-import",
       "-Ywarn-value-discard"
