@@ -11,9 +11,10 @@ lazy val amwsScala =
       name := "amws-scala",
       libraryDependencies ++= Seq(
         library.akkaHttp,
-	library.akkaStream,
+        library.akkaStream,
         library.catsCore,
         library.yaidom,
+        library.akkaHttpTestkit % Test,
         library.scalaCheck      % Test,
         library.scalaTest       % Test
       ),
