@@ -15,6 +15,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.stream.Materializer
 import akka.util.ByteString
+import cats.data._
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -25,7 +26,7 @@ import scala.concurrent.{ ExecutionContext, Future }
   * @param materializer An implicit actor materializer.
   */
 class HttpClientProviderAkkaHttp(implicit actorSystem: ActorSystem, materializer: Materializer)
-    extends HttpClientProvider[Future] {
+    extends HttpClientProvider[Lambda[A => EitherT[Future, AmwsError, A]]] {
   implicit private val executionContext: ExecutionContext = actorSystem.dispatcher
 
   /**
@@ -50,27 +51,33 @@ class HttpClientProviderAkkaHttp(implicit actorSystem: ActorSystem, materializer
     )
 
   /**
-    * Perform the given HttpRequest and convert the result into a [[AmwsRequestResult]].
+    * Perform the given HttpRequest and return either the response or an error.
     *
     * @param httpRequest An http request.
     * @return The corresponding AmwsRequestResult.
     */
-  protected def performRequest(httpRequest: HttpRequest): Future[AmwsRequestResult] =
-    for {
-      r <- Http().singleRequest(httpRequest)
-      b <- r.entity.dataBytes.runFold(ByteString(""))(_ ++ _)
-    } yield
-      r.status match {
-        case StatusCodes.OK => Right(AmwsResponse(body = b.utf8String))
-        case _              => Left(AmwsError(code = r.status.intValue(), details = Option(b.utf8String)))
-      }
+  protected def performRequest(httpRequest: HttpRequest): EitherT[Future, AmwsError, AmwsResponse] =
+    EitherT {
+      for {
+        r <- Http().singleRequest(httpRequest)
+        b <- r.entity.dataBytes.runFold(ByteString(""))(_ ++ _)
+      } yield
+        r.status match {
+          case StatusCodes.OK => Right(AmwsResponse(body = b.utf8String))
+          case _              => Left(AmwsError(code = r.status.intValue(), details = Option(b.utf8String)))
+        }
+    }
 
-  override def get(url: URI)(payload: AmwsRequestPayload): Future[AmwsRequestResult] = {
+  override def get(
+      url: URI
+  )(payload: AmwsRequestPayload): EitherT[Future, AmwsError, AmwsResponse] = {
     val request = buildRequest(HttpMethods.GET)(url)(payload)
     performRequest(request)
   }
 
-  override def post(url: URI)(payload: AmwsRequestPayload): Future[AmwsRequestResult] = {
+  override def post(
+      url: URI
+  )(payload: AmwsRequestPayload): EitherT[Future, AmwsError, AmwsResponse] = {
     val request = buildRequest(HttpMethods.POST)(url)(payload)
     performRequest(request)
   }

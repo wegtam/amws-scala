@@ -62,7 +62,7 @@ class HttpClientProviderAkkaHttpTest
             val pld = AmwsRequestPayload(data = None)
 
             val client = new HttpClientProviderAkkaHttp()
-            client.get(uri)(pld).map {
+            client.get(uri)(pld).value.map {
               case Left(e)  => e.code must be(404)
               case Right(d) => fail(s"The request must return an error instead of: $d")
             }
@@ -84,7 +84,7 @@ class HttpClientProviderAkkaHttpTest
             val pld = AmwsRequestPayload(data = None)
 
             val client = new HttpClientProviderAkkaHttp()
-            client.get(uri)(pld).map {
+            client.get(uri)(pld).value.map {
               case Left(e)  => fail(s"Http request returned an error: $e")
               case Right(d) => d.body must be(expectedResponse)
             }

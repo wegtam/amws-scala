@@ -26,7 +26,7 @@ trait HttpClientProvider[M[_]] {
     * @param payload The payload for the request.
     * @return The response of the query.
     */
-  def get(url: URI)(payload: AmwsRequestPayload): M[AmwsRequestResult]
+  def get(url: URI)(payload: AmwsRequestPayload): M[AmwsResponse]
 
   /**
     * Execute a POST http request on the given url using the provided query (data).
@@ -35,6 +35,6 @@ trait HttpClientProvider[M[_]] {
     * @param payload The payload for the request.
     * @return The response of the query.
     */
-  def post(url: URI)(payload: AmwsRequestPayload): M[AmwsRequestResult]
+  def post(url: URI)(payload: AmwsRequestPayload): M[AmwsResponse]
 
 }
