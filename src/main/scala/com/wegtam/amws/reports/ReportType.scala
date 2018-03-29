@@ -19,7 +19,7 @@ import scala.collection.immutable.Seq
   *
   * @see http://docs.developer.amazonservices.com/en_US/reports/Reports_ReportType.html
   */
-sealed trait ReportType {
+sealed trait ReportType extends Product with Serializable {
 
   /**
     * The parameter value of the report type that must be used in the
