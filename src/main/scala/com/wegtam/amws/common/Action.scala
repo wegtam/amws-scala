@@ -8,8 +8,6 @@
 
 package com.wegtam.amws.common
 
-import com.wegtam.amws.common.Request.ParameterValue
-
 /**
   * A trait that must be extended by every implemented API action.
   *

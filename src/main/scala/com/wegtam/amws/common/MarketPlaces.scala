@@ -8,14 +8,12 @@
 
 package com.wegtam.amws.common
 
-import com.wegtam.amws.common.Request.ParameterValue
-
 import scala.collection.immutable.Seq
 
 /**
   * Amazon marketplaces.
   */
-sealed trait MarketPlace {
+sealed trait MarketPlace extends Product with Serializable {
 
   /**
     * Return the region that the market place belongs to.
@@ -35,11 +33,6 @@ sealed trait MarketPlace {
 }
 
 object MarketPlaces {
-  @SuppressWarnings(
-    Array("org.wartremover.warts.Any",
-          "org.wartremover.warts.Product",
-          "org.wartremover.warts.Serializable")
-  )
   final val ALL: Seq[MarketPlace] = Seq(BR, CA, CN, DE, ES, FR, IN, IT, JP, MX, UK, US)
 
   case object CA extends MarketPlace {

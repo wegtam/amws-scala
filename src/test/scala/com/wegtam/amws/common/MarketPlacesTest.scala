@@ -9,7 +9,6 @@
 package com.wegtam.amws.common
 
 import com.wegtam.amws.common.MarketPlaces._
-import com.wegtam.amws.common.Request.ParameterValue
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{ MustMatchers, WordSpec }
 

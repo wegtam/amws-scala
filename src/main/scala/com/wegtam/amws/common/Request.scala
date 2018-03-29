@@ -16,10 +16,6 @@ import java.util.Locale
 import scala.util.Try
 
 object Request {
-  type ApiVersion        = String
-  type ParameterName     = String
-  type ParameterValue    = String
-  type RequestParameters = Map[ParameterName, ParameterValue]
 
   /**
     * Build a parameters and values that are needed for every request.

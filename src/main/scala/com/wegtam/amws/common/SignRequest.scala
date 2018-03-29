@@ -13,8 +13,6 @@ import java.util.Base64
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-import com.wegtam.amws.common.Request.{ ParameterName, RequestParameters }
-
 import scala.util.Try
 
 object SignRequest {

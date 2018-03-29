@@ -8,7 +8,7 @@
 
 package com.wegtam.amws.reports
 
-import com.wegtam.amws.common.Request.ParameterValue
+import com.wegtam.amws.common.ParameterValue
 
 /**
   * The Schedule enumeration provides the units of time that indicate how

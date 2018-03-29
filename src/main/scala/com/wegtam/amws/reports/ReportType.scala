@@ -8,7 +8,7 @@
 
 package com.wegtam.amws.reports
 
-import com.wegtam.amws.common.Request.ParameterValue
+import com.wegtam.amws.common.ParameterValue
 
 import scala.collection.immutable.Seq
 

@@ -10,8 +10,7 @@ package com.wegtam.amws.reports
 
 import java.time.OffsetDateTime
 
-import com.wegtam.amws.common.Request.{ ParameterValue, RequestParameters }
-import com.wegtam.amws.common.{ Action, MarketPlace }
+import com.wegtam.amws.common.{ Action, MarketPlace, ParameterValue, RequestParameters }
 
 import scala.collection.immutable.Seq
 
