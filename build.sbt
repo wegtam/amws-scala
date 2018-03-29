@@ -80,6 +80,12 @@ lazy val commonSettings =
       "-Ywarn-unused-import",
       "-Ywarn-value-discard"
     ),
+    scalacOptions ++= {
+      if (scalaVersion.value.startsWith("2.11"))
+        Seq("-Xmax-classfile-name", "143")
+      else
+	Seq()
+    },
     javacOptions ++= Seq(
       "-encoding", "UTF-8",
       "-source", "1.8",
