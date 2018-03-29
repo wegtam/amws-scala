@@ -82,7 +82,7 @@ lazy val commonSettings =
     ),
     scalacOptions ++= {
       if (scalaVersion.value.startsWith("2.11"))
-        Seq("-Xmax-classfile-name", "143")
+        Seq("-Xmax-classfile-name", "78")
       else
 	Seq()
     },
