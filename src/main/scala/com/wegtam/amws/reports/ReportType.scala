@@ -8,6 +8,7 @@
 
 package com.wegtam.amws.reports
 
+import com.wegtam.amws.EnumMacros
 import com.wegtam.amws.common.ParameterValue
 
 import scala.collection.immutable.Seq
@@ -32,20 +33,7 @@ sealed trait ReportType extends Product with Serializable {
 }
 
 object ReportType {
-  // A list of all available report types. New report types must be added here!
-  final val ALL: Seq[ReportType] = ListingReports.ALL ++
-  OrderReports.ALL ++
-  OrderTracking.ALL ++
-  PendingOrders.ALL ++
-  Performance.ALL ++
-  Settlement.ALL ++
-  FBASales.ALL ++
-  FBAInventory.ALL ++
-  FBAPayments.ALL ++
-  FBACustomerConcessions.ALL ++
-  FBARemovals.ALL ++
-  SalesTax.ALL ++
-  BrowseTree.ALL
+  final val ALL: Seq[ReportType] = EnumMacros.values[ReportType]
 
   /**
     * Return the report type described by the given parameter value.
@@ -61,20 +49,6 @@ object ReportType {
   * Listing Reports
   */
 object ListingReports {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    Inventory,
-    AllListings,
-    ActiveListings,
-    InactiveListings,
-    OpenListings,
-    OpenListingsLite,
-    OpenListingsLiter,
-    CanceledListings,
-    SoldListings,
-    ListingQualityAndSuppressedListings
-  )
 
   /**
     * Tab-delimited flat file open listings report that contains the SKU,
@@ -165,14 +139,6 @@ object ListingReports {
   * Order Reports
   */
 object OrderReports {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    Unshipped,
-    ScheduledXml,
-    RequestedOrScheduledFlatFile,
-    FlatFile
-  )
 
   /**
     * Tab-delimited flat file report that contains only orders that are not
@@ -236,14 +202,6 @@ object OrderReports {
   * Order Tracking Reports
   */
 object OrderTracking {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    FlatFileByLastUpdate,
-    FlatFileByOrderDate,
-    XmlByLastUpdate,
-    XmlByOrderDate
-  )
 
   /**
     * Tab-delimited flat file report that shows all orders updated in the
@@ -284,13 +242,6 @@ object OrderTracking {
   * Pending Order Reports
   */
 object PendingOrders {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    FlatFile,
-    Xml,
-    ConvergedFlatFile
-  )
 
   /**
     * Tab-delimited flat file report that can be requested or scheduled
@@ -322,12 +273,6 @@ object PendingOrders {
   * Performance Reports
   */
 object Performance {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    FlatFile,
-    XmlCustomerMetrics
-  )
 
   /**
     * Tab-delimited flat file that returns negative and neutral feedback
@@ -352,13 +297,6 @@ object Performance {
   * Settlement Reports
   */
 object Settlement {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    FlatFile,
-    Xml,
-    FlatFileV2
-  )
 
   /**
     * Tab-delimited flat file settlement report that is automatically
@@ -395,18 +333,6 @@ object Settlement {
   * Fulfillment By Amazon (FBA) Sales Reports
   */
 object FBASales {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    FulfilledShipments,
-    FlatFileAllOrdersByLastUpdate,
-    FlatFileAllOrdersByOrderDate,
-    XmlAllOrdersByLastUpdate,
-    XmlAllOrdersByOrderDate,
-    CustomerShipmentSales,
-    Promotions,
-    CustomerTaxes
-  )
 
   /**
     * Tab-delimited flat file. Contains detailed order/shipment/item
@@ -515,28 +441,6 @@ object FBASales {
   * Fulfillment By Amazon (FBA) Inventory Reports
   */
 object FBAInventory {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    AmazonFulfilledInventory,
-    MultiCountryInventory,
-    DailyInventoryHistory,
-    MonthlyInventoryHistory,
-    ReceivedInventory,
-    ReservedInventory,
-    InventoryEventDetails,
-    InventoryAdjustments,
-    InventoryHealth,
-    ManageInventory,
-    ManageInventoryArchived,
-    CrossBorderInventoryMovement,
-    RestockInventory,
-    InboundPerformance,
-    StrandedInventory,
-    BulkFixStrandedInventory,
-    InventoryAge,
-    ManageExcessInventory
-  )
 
   /**
     * Tab-delimited flat file. Content updated in near real-time. For FBA
@@ -733,12 +637,6 @@ object FBAInventory {
   * Fulfillment By Amazon (FBA) Payments Reports
   */
 object FBAPayments {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    FreePreview,
-    Reimbursements
-  )
 
   /**
     * Tab-delimited flat file. Contains the estimated Amazon Selling and
@@ -767,12 +665,6 @@ object FBAPayments {
   * Fulfillment By Amazon (FBA) Customer Concessions Reports
   */
 object FBACustomerConcessions {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    Returns,
-    Replacements
-  )
 
   /**
     * Tab-delimited flat file. Contains customer returned items received at
@@ -800,13 +692,6 @@ object FBACustomerConcessions {
   * Fulfillment By Amazon (FBA) Removals Reports
   */
 object FBARemovals {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    RecommendedRemoval,
-    RemovalOrderDetails,
-    RemovalShipmentDetails
-  )
 
   /**
     * Tab-delimited flat file. The report identifies sellable items that
@@ -853,11 +738,6 @@ object FBARemovals {
   * Sales Tax Reports
   */
 object SalesTax {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    SalesTax
-  )
 
   /**
     * Tab-delimited flat file for tax-enabled US sellers. Content updated
@@ -877,11 +757,6 @@ object SalesTax {
   * Browse Tree Reports
   */
 object BrowseTree {
-  // A list of all available report types. New report types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ReportType] = Seq(
-    BrowseTree
-  )
 
   /**
     * XML report that provides browse tree hierarchy information and node
