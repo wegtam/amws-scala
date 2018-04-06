@@ -2,9 +2,28 @@
 // Projects
 // *****************************************************************************
 
+lazy val amwsMacros =
+  project
+  .in(file("macros"))
+  .settings(settings)
+  .settings(
+    name := "amws-macros",
+    libraryDependencies ++= Seq(
+      "org.scala-lang"  % "scala-reflect" % scalaVersion.value,
+      library.scalaTest % Test
+    ),
+    scalacOptions ++= Seq(
+      "-language:experimental.macros"
+    ),
+    publish := {}, // Disable publishing of macro artefact.
+    publishLocal := {} // Disable publishing of macro artefact.
+  )
+  .enablePlugins(AutomateHeaderPlugin, GitVersioning)
+
 lazy val amwsScala =
   project
     .in(file("."))
+    .dependsOn(amwsMacros % "compile-internal, test-internal") // Prevent dependency on published macro artefact.
     .enablePlugins(AutomateHeaderPlugin, GitBranchPrompt, GitVersioning)
     .settings(settings)
     .settings(
