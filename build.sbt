@@ -47,13 +47,13 @@ lazy val amwsScala =
 lazy val library =
   new {
     object Version {
-      val akkaHttp        = "10.1.0"
-      val akkaStream      = "2.5.11"
+      val akkaHttp        = "10.1.1"
+      val akkaStream      = "2.5.12"
       val cats            = "1.1.0"
-      val scalaCheck      = "1.13.5"
+      val scalaCheck      = "1.14.0"
       val scalaTest       = "3.0.5"
       val shapeless       = "2.3.2"
-      val yaidom          = "1.8.0-M2"
+      val yaidom          = "1.8.0"
     }
     val akkaHttp        = "com.typesafe.akka"   %% "akka-http"         % Version.akkaHttp
     val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit" % Version.akkaHttp
@@ -78,7 +78,7 @@ lazy val settings =
 
 lazy val commonSettings =
   Seq(
-    scalaVersion in ThisBuild := "2.12.5",
+    scalaVersion in ThisBuild := "2.12.6",
     crossScalaVersions := Seq("2.11.12", scalaVersion.value),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
