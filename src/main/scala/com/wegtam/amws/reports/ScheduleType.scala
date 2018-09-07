@@ -8,6 +8,7 @@
 
 package com.wegtam.amws.reports
 
+import com.wegtam.amws.EnumMacros
 import com.wegtam.amws.common.ParameterValue
 
 /**
@@ -18,7 +19,7 @@ import com.wegtam.amws.common.ParameterValue
   *
   * @see http://docs.developer.amazonservices.com/en_US/reports/Reports_Schedule.html
   */
-sealed trait ScheduleType {
+sealed trait ScheduleType extends Product with Serializable {
 
   /**
     * The parameter value of the schedule type that must be used in the
@@ -32,24 +33,7 @@ sealed trait ScheduleType {
 
 object ScheduleType {
   // A list of all available schedule types. New schedule types must be added here!
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
-  final val ALL: Seq[ScheduleType] = Seq(
-    Never,
-    Every15Minutes,
-    Every30Minutes,
-    EveryHour,
-    Every2Hours,
-    Every4Hours,
-    Every8Hours,
-    Every12Hours,
-    EveryDay,
-    Every2Days,
-    Every3Days,
-    EveryWeek,
-    Every14Days,
-    Every15Days,
-    Every30Days
-  )
+  final val ALL: Seq[ScheduleType] = EnumMacros.values[ScheduleType]
 
   /**
     * Delete a previously created report request schedule.

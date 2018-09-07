@@ -15,7 +15,7 @@ import scala.collection.immutable.Seq
 /**
   * A report has a processing status.
   */
-sealed trait ReportProcessingStatus {
+sealed trait ReportProcessingStatus extends Product with Serializable {
 
   /**
     * The parameter value of the processing status that can be used
@@ -29,7 +29,6 @@ sealed trait ReportProcessingStatus {
 
 object ReportProcessingStatus {
   // A list of all report processing states.
-  @SuppressWarnings(Array("org.wartremover.warts.Product", "org.wartremover.warts.Serializable"))
   final val ALL: Seq[ReportProcessingStatus] =
     Seq(Submitted, InProgress, Cancelled, Done, DoneNoData)
 
