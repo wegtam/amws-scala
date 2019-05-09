@@ -78,8 +78,8 @@ lazy val settings =
 
 lazy val commonSettings =
   Seq(
-    scalaVersion in ThisBuild := "2.12.6",
-    crossScalaVersions := Seq("2.11.12", scalaVersion.value),
+    scalaVersion in ThisBuild := "2.12.8",
+    crossScalaVersions := Seq(scalaVersion.value),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
     addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.6" cross CrossVersion.binary),
