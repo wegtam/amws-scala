@@ -32,8 +32,6 @@ sealed trait ScheduleType extends Product with Serializable {
 }
 
 object ScheduleType {
-  // A list of all available schedule types. New schedule types must be added here!
-  final val ALL: Seq[ScheduleType] = EnumMacros.values[ScheduleType]
 
   /**
     * Delete a previously created report request schedule.
@@ -97,4 +95,7 @@ object ScheduleType {
   case object Every30Days extends ScheduleType {
     override def toParameterValue: ParameterValue = "_30_DAYS_"
   }
+
+  // A list of all available schedule types. New schedule types must be added here!
+  final val ALL: Seq[ScheduleType] = EnumMacros.values[ScheduleType]
 }
