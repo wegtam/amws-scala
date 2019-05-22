@@ -10,7 +10,7 @@ package com.wegtam.amws.reports.adt
 
 import java.time.OffsetDateTime
 
-import com.wegtam.amws.reports.{ ListingReports, OrderTracking, ReportProcessingStatus }
+import com.wegtam.amws.reports._
 import org.scalatest.{ MustMatchers, WordSpec }
 
 class ReportRequestInfoTest extends WordSpec with MustMatchers {
@@ -118,7 +118,7 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers {
           ),
           ReportRequestInfo(
             id = "2291326455",
-            reportType = OrderTracking.FlatFileByLastUpdate,
+            reportType = FBASales.FlatFileAllOrdersByLastUpdate,
             startDate = OffsetDateTime.parse("2011-01-21T02:10:39+00:00"),
             endDate = OffsetDateTime.parse("2011-02-13T02:10:39+00:00"),
             scheduled = true,
@@ -141,7 +141,10 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers {
             completedDate = None
           )
         )
-        ReportRequestInfo.fromXmlGetReportRequestListResponse(xml) mustEqual expected
+        ReportRequestInfo
+          .fromXmlGetReportRequestListResponse(xml)
+          .toList
+          .sorted mustEqual expected.sorted
       }
     }
   }
