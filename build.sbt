@@ -47,8 +47,8 @@ lazy val amwsScala =
 lazy val library =
   new {
     object Version {
-      val akkaHttp        = "10.1.1"
-      val akkaStream      = "2.5.12"
+      val akkaHttp        = "10.1.8"
+      val akkaStream      = "2.5.23"
       val cats            = "1.1.0"
       val scalaCheck      = "1.14.0"
       val scalaTest       = "3.0.7"

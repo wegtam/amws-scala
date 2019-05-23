@@ -44,8 +44,7 @@ class HttpClientProviderAkkaHttp(implicit actorSystem: ActorSystem, materializer
       method = method,
       uri = url.toString,
       entity = HttpEntity(
-        contentType =
-          ContentType(MediaTypes.`application/x-www-form-urlencoded`, HttpCharsets.`UTF-8`),
+        contentType = ContentTypes.`application/x-www-form-urlencoded`,
         data = ByteString(payload.data.getOrElse(""))
       )
     )
