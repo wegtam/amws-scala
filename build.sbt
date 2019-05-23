@@ -49,11 +49,11 @@ lazy val library =
     object Version {
       val akkaHttp        = "10.1.8"
       val akkaStream      = "2.5.23"
-      val cats            = "1.1.0"
+      val cats            = "1.6.0"
       val scalaCheck      = "1.14.0"
       val scalaTest       = "3.0.7"
       val shapeless       = "2.3.2"
-      val yaidom          = "1.8.0"
+      val yaidom          = "1.9.0"
     }
     val akkaHttp        = "com.typesafe.akka"   %% "akka-http"         % Version.akkaHttp
     val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit" % Version.akkaHttp
