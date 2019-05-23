@@ -12,12 +12,12 @@ import java.net.URI
 
 import com.wegtam.amws.common.MarketPlaces._
 import com.wegtam.amws.common.Regions._
-import org.scalatest.prop.PropertyChecks
 import org.scalatest.{ MustMatchers, WordSpec }
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 import scala.collection.immutable.Seq
 
-class RegionsTest extends WordSpec with MustMatchers with PropertyChecks {
+class RegionsTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
   private final val expectedEndpoints = Table(
     ("Region", "Endpoint"),
     (NorthAmerica, new URI("https://mws.amazonservices.com")),

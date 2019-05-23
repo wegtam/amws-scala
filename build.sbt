@@ -51,7 +51,7 @@ lazy val library =
       val akkaStream      = "2.5.12"
       val cats            = "1.1.0"
       val scalaCheck      = "1.14.0"
-      val scalaTest       = "3.0.5"
+      val scalaTest       = "3.0.7"
       val shapeless       = "2.3.2"
       val yaidom          = "1.8.0"
     }

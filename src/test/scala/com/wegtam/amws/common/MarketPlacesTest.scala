@@ -9,12 +9,12 @@
 package com.wegtam.amws.common
 
 import com.wegtam.amws.common.MarketPlaces._
-import org.scalatest.prop.PropertyChecks
 import org.scalatest.{ MustMatchers, WordSpec }
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 import scala.collection.immutable.Seq
 
-class MarketPlacesTest extends WordSpec with MustMatchers with PropertyChecks {
+class MarketPlacesTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
   private final val expectedIds = Table(
     ("Marketplace", "ID"),
     (BR, "A2Q3Y263D00KWC"),

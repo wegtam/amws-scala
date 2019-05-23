@@ -12,12 +12,12 @@ import java.net.{ URI, URLEncoder }
 import java.nio.charset.StandardCharsets
 
 import org.scalacheck.Gen
-import org.scalatest.prop.PropertyChecks
 import org.scalatest.{ MustMatchers, WordSpec }
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 import scala.util.{ Failure, Success }
 
-class RequestTest extends WordSpec with MustMatchers with PropertyChecks {
+class RequestTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
 
   "buildBaseRequest" must {
     "include AWSAccessKeyId" in {
