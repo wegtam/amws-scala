@@ -8,6 +8,8 @@
 
 package com.wegtam.amws.reports
 
+import cats.instances.string._
+import cats.syntax.eq._
 import com.wegtam.amws.EnumMacros
 import com.wegtam.amws.common.ParameterValue
 
@@ -41,7 +43,7 @@ object ReportType {
     * @param v A string representation of the report type.
     * @return An option to the appropriate report type.
     */
-  def fromParameterValue(v: ParameterValue): Option[ReportType] = ALL.find(_.toParameterValue == v)
+  def fromParameterValue(v: ParameterValue): Option[ReportType] = ALL.find(_.toParameterValue === v)
 
 }
 
