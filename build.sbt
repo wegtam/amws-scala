@@ -35,6 +35,7 @@ lazy val amwsScala =
         library.yaidom,
         library.akkaHttpTestkit % Test,
         library.scalaCheck      % Test,
+	library.scalaCheckTools % Test,
         library.scalaTest       % Test
       ),
       wartremoverWarnings in (Compile, compile) ++= Warts.unsafe
@@ -51,18 +52,20 @@ lazy val library =
       val akkaStream      = "2.5.23"
       val cats            = "1.6.0"
       val scalaCheck      = "1.14.0"
+      val scalaCheckTools = "0.2.5"
       val scalaTest       = "3.0.7"
       val shapeless       = "2.3.2"
       val yaidom          = "1.9.0"
     }
-    val akkaHttp        = "com.typesafe.akka"   %% "akka-http"         % Version.akkaHttp
-    val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit" % Version.akkaHttp
-    val akkaStream      = "com.typesafe.akka"   %% "akka-stream"       % Version.akkaStream
-    val catsCore        = "org.typelevel"       %% "cats-core"         % Version.cats
-    val scalaCheck      = "org.scalacheck"      %% "scalacheck"        % Version.scalaCheck
-    val scalaTest       = "org.scalatest"       %% "scalatest"         % Version.scalaTest
-    val shapeless       = "com.chuusai"         %% "shapeless"         % Version.shapeless
-    val yaidom          = "eu.cdevreeze.yaidom" %% "yaidom"            % Version.yaidom
+    val akkaHttp        = "com.typesafe.akka"   %% "akka-http"                   % Version.akkaHttp
+    val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit"           % Version.akkaHttp
+    val akkaStream      = "com.typesafe.akka"   %% "akka-stream"                 % Version.akkaStream
+    val catsCore        = "org.typelevel"       %% "cats-core"                   % Version.cats
+    val scalaCheck      = "org.scalacheck"      %% "scalacheck"        	         % Version.scalaCheck
+    val scalaCheckTools = "com.47deg"           %% "scalacheck-toolbox-datetime" % Version.scalaCheckTools
+    val scalaTest       = "org.scalatest"       %% "scalatest"                   % Version.scalaTest
+    val shapeless       = "com.chuusai"         %% "shapeless"                   % Version.shapeless
+    val yaidom          = "eu.cdevreeze.yaidom" %% "yaidom"                      % Version.yaidom
   }
 
 // *****************************************************************************
@@ -110,9 +113,11 @@ lazy val commonSettings =
       "-source", "1.8",
       "-target", "1.8"
     ),
-    unmanagedSourceDirectories.in(Compile) := Seq(scalaSource.in(Compile).value),
-    unmanagedSourceDirectories.in(Test) := Seq(scalaSource.in(Test).value),
-    autoAPIMappings := true
+    autoAPIMappings := true,
+    Compile / console / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused-import"),
+    Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
+    Test / console / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused-import"),
+    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)
   )
 
 lazy val gitSettings =
