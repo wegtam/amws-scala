@@ -85,7 +85,7 @@ lazy val commonSettings =
     crossScalaVersions := Seq(scalaVersion.value),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
-    addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.10" cross CrossVersion.binary),
+    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.10.3" cross CrossVersion.binary),
     scalacOptions ++= Seq(
       "-deprecation",
       "-encoding", "UTF-8",
