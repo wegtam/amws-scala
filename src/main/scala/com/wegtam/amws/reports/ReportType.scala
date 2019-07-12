@@ -48,6 +48,61 @@ object ReportType {
 }
 
 /**
+  * Some reports map to the same AMWS API ID meaning that they are shared
+  * between the different service sections.
+  *
+  * To avoid confusion they are grouped herein.
+  */
+object SharedReports {
+
+  /**
+    * Tab-delimited flat file. Returns all orders placed in the specified
+    * date range regardless of fulfillment channel or shipment status. This
+    * report is intended for order tracking, not to drive your fulfillment
+    * process; it does not include customer identifying information and
+    * scheduling is not supported. For all sellers.
+    */
+  case object FlatFileAllOrdersByOrderDate extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_"
+  }
+
+  /**
+    * Tab-delimited flat file. Returns all orders updated in the specified
+    * date range regardless of fulfillment channel or shipment status. This
+    * report is intended for order tracking, not to drive your fulfillment
+    * process; it does not include customer identifying information and
+    * scheduling is not supported. For all sellers.
+    */
+  case object FlatFileAllOrdersByLastUpdate extends ReportType {
+    override def toParameterValue: ParameterValue =
+      "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
+  }
+
+  /**
+    * XML file order report that returns all orders placed in the specified
+    * date range regardless of fulfillment channel or shipment status. This
+    * report is intended for order tracking, not to drive your fulfillment
+    * process; it does not include customer identifying information and
+    * scheduling is not supported. For all sellers.
+    */
+  case object XmlAllOrdersByOrderDate extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_"
+  }
+
+  /**
+    * XML file order report that returns all orders updated in the
+    * specified date range regardless of fulfillment channel or shipment
+    * status. This report is intended for order tracking, not to drive your
+    * fulfillment process; it does not include customer identifying
+    * information and scheduling is not supported. For all sellers.
+    */
+  case object XmlAllOrdersByLastUpdate extends ReportType {
+    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
+  }
+
+}
+
+/**
   * Listing Reports
   */
 object ListingReports {
@@ -204,40 +259,7 @@ object OrderReports {
   * Order Tracking Reports
   */
 object OrderTracking {
-
-  /**
-    * Tab-delimited flat file report that shows all orders updated in the
-    * specified period. Cannot be scheduled. For all sellers.
-    */
-  case object FlatFileByLastUpdate extends ReportType {
-    override def toParameterValue: ParameterValue =
-      "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
-  }
-
-  /**
-    * Tab-delimited flat file report that shows all orders that were
-    * placed in the specified period. Cannot be scheduled. For all sellers.
-    */
-  case object FlatFileByOrderDate extends ReportType {
-    override def toParameterValue: ParameterValue = "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_"
-  }
-
-  /**
-    * XML report that shows all orders updated in the specified period.
-    * Cannot be scheduled. For all sellers.
-    */
-  case object XmlByLastUpdate extends ReportType {
-    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
-  }
-
-  /**
-    * XML report that shows all orders that were placed in the specified
-    * period. Cannot be scheduled. For all sellers.
-    */
-  case object XmlByOrderDate extends ReportType {
-    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_"
-  }
-
+  // The order tracking reports are all shared reports.
 }
 
 /**
@@ -352,51 +374,6 @@ object FBASales {
     */
   case object FulfilledShipments extends ReportType {
     override def toParameterValue: ParameterValue = "_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_"
-  }
-
-  /**
-    * Tab-delimited flat file. Returns all orders updated in the specified
-    * date range regardless of fulfillment channel or shipment status. This
-    * report is intended for order tracking, not to drive your fulfillment
-    * process; it does not include customer identifying information and
-    * scheduling is not supported. For all sellers.
-    */
-  case object FlatFileAllOrdersByLastUpdate extends ReportType {
-    override def toParameterValue: ParameterValue =
-      "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
-  }
-
-  /**
-    * Tab-delimited flat file. Returns all orders placed in the specified
-    * date range regardless of fulfillment channel or shipment status. This
-    * report is intended for order tracking, not to drive your fulfillment
-    * process; it does not include customer identifying information and
-    * scheduling is not supported. For all sellers.
-    */
-  case object FlatFileAllOrdersByOrderDate extends ReportType {
-    override def toParameterValue: ParameterValue = "_GET_FLAT_FILE_ALL_ORDERS_DATA_BY_ORDER_DATE_"
-  }
-
-  /**
-    * XML file order report that returns all orders updated in the
-    * specified date range regardless of fulfillment channel or shipment
-    * status. This report is intended for order tracking, not to drive your
-    * fulfillment process; it does not include customer identifying
-    * information and scheduling is not supported. For all sellers.
-    */
-  case object XmlAllOrdersByLastUpdate extends ReportType {
-    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_LAST_UPDATE_"
-  }
-
-  /**
-    * XML file order report that returns all orders placed in the specified
-    * date range regardless of fulfillment channel or shipment status. This
-    * report is intended for order tracking, not to drive your fulfillment
-    * process; it does not include customer identifying information and
-    * scheduling is not supported. For all sellers.
-    */
-  case object XmlAllOrdersByOrderDate extends ReportType {
-    override def toParameterValue: ParameterValue = "_GET_XML_ALL_ORDERS_DATA_BY_ORDER_DATE_"
   }
 
   /**
