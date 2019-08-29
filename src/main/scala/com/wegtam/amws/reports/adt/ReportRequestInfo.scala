@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
 
 import com.wegtam.amws.reports.{ ReportProcessingStatus, ReportType }
 import eu.cdevreeze.yaidom.parse.DocumentParserUsingSax
-import eu.cdevreeze.yaidom.queryapi.HasENameApi.withLocalName
+import eu.cdevreeze.yaidom.queryapi.ClarkElemApi._
 import eu.cdevreeze.yaidom.simple.Elem
 
 import scala.util.Try
