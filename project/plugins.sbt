@@ -1,4 +1,4 @@
-addSbtPlugin("org.foundweekends" % "sbt-bintray"     % "0.5.4")
+addSbtPlugin("org.foundweekends" % "sbt-bintray"     % "0.5.5")
 addSbtPlugin("com.typesafe.sbt"  % "sbt-git"         % "1.0.0")
 addSbtPlugin("de.heikoseeberger" % "sbt-header"      % "5.0.0")
 addSbtPlugin("com.jsuereth"      % "sbt-pgp"         % "1.1.0")
