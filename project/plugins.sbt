@@ -6,4 +6,4 @@ addSbtPlugin("com.geirsson"      % "sbt-scalafmt"    % "1.5.1")
 addSbtPlugin("org.scoverage"     % "sbt-scoverage"   % "1.5.1")
 addSbtPlugin("org.wartremover"   % "sbt-wartremover" % "2.4.2")
 
-libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.25" // Needed by sbt-git
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.28" // Needed by sbt-git
