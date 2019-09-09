@@ -33,10 +33,12 @@ object Request {
     * @param version     The version of the API section being called.
     * @return A map of parameter names and values.
     */
-  def buildBaseRequestParameters(accessKeyId: ParameterValue,
-                                 authToken: Option[ParameterValue],
-                                 sellerId: ParameterValue,
-                                 version: ApiVersion): RequestParameters = {
+  def buildBaseRequestParameters(
+      accessKeyId: ParameterValue,
+      authToken: Option[ParameterValue],
+      sellerId: ParameterValue,
+      version: ApiVersion
+  ): RequestParameters = {
     val a: RequestParameters =
       authToken.fold(Map.empty[ParameterName, ParameterValue])(t => Map("MWSAuthToken" -> t))
     a ++ Map(

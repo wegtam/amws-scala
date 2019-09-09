@@ -60,11 +60,10 @@ class HttpClientProviderAkkaHttp(implicit actorSystem: ActorSystem, materializer
       for {
         r <- Http().singleRequest(httpRequest)
         b <- r.entity.dataBytes.runFold(ByteString(""))(_ ++ _)
-      } yield
-        r.status match {
-          case StatusCodes.OK => Right(AmwsResponse(body = b.utf8String))
-          case _              => Left(AmwsError(code = r.status.intValue(), details = Option(b.utf8String)))
-        }
+      } yield r.status match {
+        case StatusCodes.OK => Right(AmwsResponse(body = b.utf8String))
+        case _              => Left(AmwsError(code = r.status.intValue(), details = Option(b.utf8String)))
+      }
     }
 
   override def get(

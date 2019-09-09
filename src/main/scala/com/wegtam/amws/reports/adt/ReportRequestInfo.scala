@@ -73,19 +73,18 @@ object ReportRequestInfo {
       rid = e.findChildElem(withLocalName("GeneratedReportId")).map(_.trimmedText)
       spd = e.findChildElem(withLocalName("StartedProcessingDate")).map(_.trimmedText)
       epd = e.findChildElem(withLocalName("CompletedDate")).map(_.trimmedText)
-    } yield
-      ReportRequestInfo(
-        id = id,
-        reportType = rt,
-        startDate = OffsetDateTime.parse(sd),
-        endDate = OffsetDateTime.parse(ed),
-        scheduled = sc == "true",
-        submittedDate = OffsetDateTime.parse(rd),
-        status = st,
-        generatedReportId = rid,
-        startedProcessingDate = spd.map(t => OffsetDateTime.parse(t)),
-        completedDate = epd.map(t => OffsetDateTime.parse(t))
-      )
+    } yield ReportRequestInfo(
+      id = id,
+      reportType = rt,
+      startDate = OffsetDateTime.parse(sd),
+      endDate = OffsetDateTime.parse(ed),
+      scheduled = sc == "true",
+      submittedDate = OffsetDateTime.parse(rd),
+      status = st,
+      generatedReportId = rid,
+      startedProcessingDate = spd.map(t => OffsetDateTime.parse(t)),
+      completedDate = epd.map(t => OffsetDateTime.parse(t))
+    )
 
   /**
     * Try to extract the [[ReportRequestInfo]] informations from the given xml fragment.

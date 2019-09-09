@@ -57,15 +57,14 @@ object ReportInfo {
       ad <- e.findChildElem(withLocalName("AvailableDate")).map(_.trimmedText)
       ack = e.findChildElem(withLocalName("Acknowledged")).map(_.trimmedText).getOrElse("false")
       acd = e.findChildElem(withLocalName("AcknowledgedDate")).map(_.trimmedText)
-    } yield
-      ReportInfo(
-        id = id,
-        reportType = rt,
-        requestId = ri,
-        availableDate = OffsetDateTime.parse(ad),
-        acknowledged = ack == "true",
-        acknowledgedDate = acd.map(t => OffsetDateTime.parse(t))
-      )
+    } yield ReportInfo(
+      id = id,
+      reportType = rt,
+      requestId = ri,
+      availableDate = OffsetDateTime.parse(ad),
+      acknowledged = ack == "true",
+      acknowledgedDate = acd.map(t => OffsetDateTime.parse(t))
+    )
 
   /**
     * Try to extract the [[ReportInfo]] informations from the given xml fragment.

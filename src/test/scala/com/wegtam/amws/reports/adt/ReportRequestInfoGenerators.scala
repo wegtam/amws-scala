@@ -48,19 +48,18 @@ object ReportRequestInfoGenerators {
     gid    <- Gen.option(Gen.choose(0, Int.MaxValue))
     spd    <- Gen.option(genOffsetDateTime)
     cd     <- Gen.option(genOffsetDateTime)
-  } yield
-    ReportRequestInfo(
-      id = id.toString,
-      reportType = rt,
-      startDate = sd,
-      endDate = ed,
-      scheduled = sched,
-      submittedDate = subd,
-      status = status,
-      generatedReportId = gid.map(_.toString),
-      startedProcessingDate = spd,
-      completedDate = cd
-    )
+  } yield ReportRequestInfo(
+    id = id.toString,
+    reportType = rt,
+    startDate = sd,
+    endDate = ed,
+    scheduled = sched,
+    submittedDate = subd,
+    status = status,
+    generatedReportId = gid.map(_.toString),
+    startedProcessingDate = spd,
+    completedDate = cd
+  )
 
   implicit val arbitraryReportRequestInfo: Arbitrary[ReportRequestInfo] = Arbitrary(
     genReportRequestInfo

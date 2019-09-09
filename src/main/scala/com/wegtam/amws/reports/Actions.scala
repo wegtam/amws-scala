@@ -48,11 +48,11 @@ object Actions {
         marketplaces: Seq[MarketPlace]
     ): RequestParameters = {
       val ps = Map(
-        "Action"     -> toParameterValue,
-        "ReportType" -> reportType.toParameterValue
-      ) ++ marketplaces.zipWithIndex.map(
-        t => s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
-      )
+          "Action"     -> toParameterValue,
+          "ReportType" -> reportType.toParameterValue
+        ) ++ marketplaces.zipWithIndex.map(
+          t => s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
+        )
       val ps2 = startDate.fold(ps)(sd => ps + ("StartDate" -> sd.toString))
       val ps3 = endDate.fold(ps2)(ed => ps2 + ("EndDate"   -> ed.toString))
       ps3
@@ -101,12 +101,12 @@ object Actions {
       )
       if (requestIds.isEmpty) {
         val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
-        ) ++
-        processing.zipWithIndex.map(
-          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
-        ) ++
-        Map("MaxCount" -> max.toString)
+            t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+          ) ++
+          processing.zipWithIndex.map(
+            t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          ) ++
+          Map("MaxCount" -> max.toString)
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
       } else
@@ -171,11 +171,11 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
-      ) ++
-      processing.zipWithIndex.map(
-        t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
-      )
+          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++
+        processing.zipWithIndex.map(
+          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+        )
       val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
       to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
     }
@@ -214,11 +214,11 @@ object Actions {
       )
       if (requestIds.isEmpty) {
         val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
-        ) ++
-        processing.zipWithIndex.map(
-          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
-        )
+            t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+          ) ++
+          processing.zipWithIndex.map(
+            t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          )
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
       } else
@@ -264,12 +264,12 @@ object Actions {
       )
       if (requestIds.isEmpty) {
         val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
-        ) ++
-        processing.zipWithIndex.map(
-          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
-        ) ++
-        Map("MaxCount" -> max.toString)
+            t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+          ) ++
+          processing.zipWithIndex.map(
+            t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          ) ++
+          Map("MaxCount" -> max.toString)
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
       } else
@@ -331,8 +331,8 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
-      )
+          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        )
       val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
       to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
     }
@@ -490,8 +490,10 @@ object Actions {
         reportIds: Seq[String],
         acknowledged: Boolean
     ): RequestParameters = {
-      require(reportIds.length <= 100,
-              "The maximum number of reports that can be specified is 100.")
+      require(
+        reportIds.length <= 100,
+        "The maximum number of reports that can be specified is 100."
+      )
       Map(
         "Action"       -> toParameterValue,
         "Marketplace"  -> marketPlace.toParameterValue,
