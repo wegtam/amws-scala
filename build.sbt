@@ -50,8 +50,8 @@ lazy val library =
     object Version {
       val akkaHttp        = "10.1.9"
       val akkaStream      = "2.5.25"
-      val cats            = "2.0.0"
-      val scalaCheck      = "1.14.0"
+      val cats            = "1.6.1"
+      val scalaCheck      = "1.14.1"
       val scalaCheckTools = "0.2.6"
       val scalaTest       = "3.0.8"
       val shapeless       = "2.3.2"
