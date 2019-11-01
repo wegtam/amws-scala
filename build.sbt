@@ -81,7 +81,7 @@ lazy val settings =
 
 lazy val commonSettings =
   Seq(
-    scalaVersion in ThisBuild := "2.12.9",
+    scalaVersion in ThisBuild := "2.12.10",
     crossScalaVersions := Seq(scalaVersion.value),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
