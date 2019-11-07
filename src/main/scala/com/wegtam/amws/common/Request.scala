@@ -16,7 +16,6 @@ import java.util.Locale
 import scala.util.Try
 
 object Request {
-
   /**
     * Build a parameters and values that are needed for every request.
     *
@@ -88,5 +87,4 @@ object Request {
   @throws[java.io.UnsupportedEncodingException]
   def urlEncode(s: ParameterValue): ParameterValue =
     URLEncoder.encode(s, "UTF-8").replace("+", "%20").replace("*", "%2A").replace("%7E", "~")
-
 }

@@ -14,7 +14,6 @@ import com.typesafe.config.ConfigFactory
 import org.scalatest.{ MustMatchers, WordSpec }
 
 class ConfigTest extends WordSpec with MustMatchers {
-
   "getAccessKeyId" when {
     "setting is defined" must {
       "return the proper value" in {
@@ -78,5 +77,4 @@ class ConfigTest extends WordSpec with MustMatchers {
       }
     }
   }
-
 }

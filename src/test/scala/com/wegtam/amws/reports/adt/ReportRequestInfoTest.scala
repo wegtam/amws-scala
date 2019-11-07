@@ -93,5 +93,4 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers with ScalaCheckPr
       }
     }
   }
-
 }

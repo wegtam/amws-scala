@@ -18,7 +18,6 @@ import scala.language.higherKinds
   * @tparam M The return type wrapper.
   */
 trait HttpClientProvider[M[_]] {
-
   /**
     * Execute a GET http request on the given url using the provided query (data).
     *
@@ -36,5 +35,4 @@ trait HttpClientProvider[M[_]] {
     * @return The response of the query.
     */
   def post(url: URI)(payload: AmwsRequestPayload): M[AmwsResponse]
-
 }

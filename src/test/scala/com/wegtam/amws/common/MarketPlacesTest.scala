@@ -69,5 +69,4 @@ class MarketPlacesTest extends WordSpec with MustMatchers with ScalaCheckPropert
       }
     }
   }
-
 }

@@ -16,10 +16,8 @@ import com.wegtam.amws.reports.{ Actions, ReportType }
 import scala.collection.immutable.Seq
 
 object syntax {
-
   def buildReportRequest(reportType: ReportType)(
       startDate: Option[OffsetDateTime]
   )(endDate: Option[OffsetDateTime])(marketplaces: Seq[MarketPlace]): RequestParameters =
     Actions.RequestReport.buildRequestParameters(reportType, startDate, endDate, marketplaces)
-
 }

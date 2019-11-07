@@ -18,7 +18,6 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import scala.util.{ Failure, Success }
 
 class RequestTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
-
   "buildBaseRequest" must {
     "include AWSAccessKeyId" in {
       val m = Request.buildBaseRequestParameters(
@@ -88,7 +87,6 @@ class RequestTest extends WordSpec with MustMatchers with ScalaCheckPropertyChec
   }
 
   "urlEncode" must {
-
     val urlParamValues = for { u <- Gen.alphaNumStr } yield u
 
     "work correctly" in {
@@ -101,5 +99,4 @@ class RequestTest extends WordSpec with MustMatchers with ScalaCheckPropertyChec
       }
     }
   }
-
 }

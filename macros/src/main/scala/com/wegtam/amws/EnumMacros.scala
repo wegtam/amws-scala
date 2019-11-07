@@ -17,7 +17,6 @@ import scala.reflect.macros.whitebox
   * trait hierarchies.
   */
 object EnumMacros {
-
   /**
     * Return a sequence of all known subclasses of a sealed trait which is provided
     * as the type parameter.

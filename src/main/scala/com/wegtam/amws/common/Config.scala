@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets
 import scala.util.Try
 
 object Config {
-
   /**
     * Return the AWSAccessKeyId from the configuration.
     *
@@ -51,5 +50,4 @@ object Config {
     */
   def getSellerId(cfg: com.typesafe.config.Config): Option[String] =
     Try(cfg.getString("amws.seller-id")).toOption
-
 }

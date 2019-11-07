@@ -13,12 +13,10 @@ package com.wegtam.amws.common
   *
   */
 trait Action {
-
   /**
     * The parameter value of the action that can be used in the query.
     *
     * @return A string representation of the action.
     */
   def toParameterValue: ParameterValue
-
 }

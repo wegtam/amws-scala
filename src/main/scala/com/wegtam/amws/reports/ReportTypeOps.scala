@@ -15,20 +15,16 @@ import com.wegtam.amws.common.{ MarketPlace, RequestParameters }
 import scala.collection.immutable._
 
 trait ReportTypeOps[T] {
-
   def buildReportRequest(t: T)(from: Option[OffsetDateTime])(to: Option[OffsetDateTime])(
       ms: Seq[MarketPlace]
   ): RequestParameters
-
 }
 
 object ReportTypeOps {
-
   implicit object ReportTypeOpsImpl extends ReportTypeOps[ReportType] {
     override def buildReportRequest(t: ReportType)(
         from: Option[OffsetDateTime]
     )(to: Option[OffsetDateTime])(ms: Seq[MarketPlace]): RequestParameters =
       Actions.RequestReport.buildRequestParameters(t, from, to, ms)
   }
-
 }
