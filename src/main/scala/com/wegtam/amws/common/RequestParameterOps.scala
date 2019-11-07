@@ -11,13 +11,10 @@ package com.wegtam.amws.common
 import scala.collection.immutable._
 
 trait RequestParameterOps[T] {
-
   def toRequestParameters(t: T): RequestParameters
-
 }
 
 object RequestParameterOps {
-
   implicit object RequestParameterOpsSingle extends RequestParameterOps[RequestParameter] {
     override def toRequestParameters(t: RequestParameter): RequestParameters = Map(
       t.name -> t.value

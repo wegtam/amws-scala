@@ -13,7 +13,7 @@ import java.net.{ ServerSocket, URI }
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.{ Directives, Route }
-import akka.stream.{ ActorMaterializer, Materializer }
+import akka.stream.Materializer
 import org.scalatest.{ AsyncWordSpec, BeforeAndAfterAll, MustMatchers }
 
 import scala.concurrent.Await
@@ -24,7 +24,7 @@ class HttpClientProviderAkkaHttpTest
     with MustMatchers
     with BeforeAndAfterAll {
   implicit private val system: ActorSystem        = ActorSystem()
-  implicit private val materializer: Materializer = ActorMaterializer()
+  implicit private val materializer: Materializer = Materializer(system)
 
   /**
     * Start a server socket and close it. The port number used by

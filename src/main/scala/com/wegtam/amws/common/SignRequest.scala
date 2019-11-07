@@ -41,5 +41,4 @@ object SignRequest {
     val sig = hmac.doFinal(data)
     new String(base.encode(sig), StandardCharsets.UTF_8)
   }
-
 }

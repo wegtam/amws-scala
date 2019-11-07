@@ -47,7 +47,6 @@ final case class ReportRequestInfo(
 )
 
 object ReportRequestInfo {
-
   implicit val ordering: Ordering[ReportRequestInfo] =
     (x: ReportRequestInfo, y: ReportRequestInfo) => x.submittedDate.compareTo(y.submittedDate)
 

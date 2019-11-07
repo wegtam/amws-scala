@@ -52,5 +52,4 @@ class RegionsTest extends WordSpec with MustMatchers with ScalaCheckPropertyChec
       }
     }
   }
-
 }

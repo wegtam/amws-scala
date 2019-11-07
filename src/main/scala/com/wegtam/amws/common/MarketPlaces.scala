@@ -14,7 +14,6 @@ import scala.collection.immutable.Seq
   * Amazon marketplaces.
   */
 sealed trait MarketPlace extends Product with Serializable {
-
   /**
     * Return the region that the market place belongs to.
     *
@@ -29,7 +28,6 @@ sealed trait MarketPlace extends Product with Serializable {
     * @return A string representation of the marketplace, usable in a query.
     */
   def toParameterValue: ParameterValue
-
 }
 
 object MarketPlaces {
@@ -106,5 +104,4 @@ object MarketPlaces {
 
     override def toParameterValue: ParameterValue = "AAHKV2X7AFYLW"
   }
-
 }

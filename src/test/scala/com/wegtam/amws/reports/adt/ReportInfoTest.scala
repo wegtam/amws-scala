@@ -16,7 +16,6 @@ import org.scalatest.{ MustMatchers, WordSpec }
 import scala.collection.immutable.Seq
 
 class ReportInfoTest extends WordSpec with MustMatchers {
-
   "fromXmlString" when {
     "given valid xml" must {
       "return the correct ReportInfo" in {
@@ -112,5 +111,4 @@ class ReportInfoTest extends WordSpec with MustMatchers {
       }
     }
   }
-
 }

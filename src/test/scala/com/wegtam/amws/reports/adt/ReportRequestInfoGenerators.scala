@@ -18,7 +18,6 @@ import org.scalacheck.{ Arbitrary, Gen }
   * Provide generators for ScalaCheck.
   */
 object ReportRequestInfoGenerators {
-
   val genReportProcessingStatus: Gen[ReportProcessingStatus] = for {
     s <- Gen.oneOf(ReportProcessingStatus.ALL)
   } yield s
@@ -72,5 +71,4 @@ object ReportRequestInfoGenerators {
   implicit val arbitraryReportRequestInfoList: Arbitrary[List[ReportRequestInfo]] = Arbitrary(
     genReportRequestInfoList
   )
-
 }

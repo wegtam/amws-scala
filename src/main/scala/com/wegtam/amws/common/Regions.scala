@@ -30,11 +30,9 @@ sealed trait Region { self =>
     * @return A list of market places.
     */
   def marketPlaces: Seq[MarketPlace] = MarketPlaces.ALL.filter(_.region == self)
-
 }
 
 object Regions {
-
   case object NorthAmerica extends Region {
     override def endPoint: URI = new URI("https://mws.amazonservices.com")
   }
@@ -58,5 +56,4 @@ object Regions {
   case object Japan extends Region {
     override def endPoint: URI = new URI("https://mws.amazonservices.jp")
   }
-
 }

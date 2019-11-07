@@ -40,7 +40,6 @@ final case class ReportInfo(
 )
 
 object ReportInfo {
-
   /**
     * Extract a [[ReportInfo]] from the given xml element.
     *
@@ -101,5 +100,4 @@ object ReportInfo {
       it
     }
   }
-
 }

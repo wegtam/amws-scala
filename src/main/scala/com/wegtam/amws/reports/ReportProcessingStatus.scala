@@ -16,7 +16,6 @@ import scala.collection.immutable.Seq
   * A report has a processing status.
   */
 sealed trait ReportProcessingStatus extends Product with Serializable {
-
   /**
     * The parameter value of the processing status that can be used
     * in a query and is also the value returned in responses.
@@ -24,7 +23,6 @@ sealed trait ReportProcessingStatus extends Product with Serializable {
     * @return A string representation of the processing status.
     */
   def toParameterValue: ParameterValue
-
 }
 
 object ReportProcessingStatus {
@@ -75,5 +73,4 @@ object ReportProcessingStatus {
   case object DoneNoData extends ReportProcessingStatus {
     override def toParameterValue: ParameterValue = "_DONE_NO_DATA_"
   }
-
 }
