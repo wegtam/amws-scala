@@ -53,7 +53,7 @@ lazy val library =
       val cats            = "2.0.0"
       val scalaCheck      = "1.14.2"
       val scalaCheckTools = "0.3.1"
-      val scalaTest       = "3.0.8"
+      val scalaTest       = "3.1.0"
       val shapeless       = "2.3.2"
       val yaidom          = "1.10.1"
     }
