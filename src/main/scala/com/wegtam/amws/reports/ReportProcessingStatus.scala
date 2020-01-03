@@ -16,6 +16,7 @@ import scala.collection.immutable.Seq
   * A report has a processing status.
   */
 sealed trait ReportProcessingStatus extends Product with Serializable {
+
   /**
     * The parameter value of the processing status that can be used
     * in a query and is also the value returned in responses.

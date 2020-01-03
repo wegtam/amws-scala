@@ -23,6 +23,7 @@ import scala.collection.immutable.Seq
   * `ReportTypes` enumeration.
   */
 object Actions {
+
   /**
     * The `RequestReport` operation creates a report request. Amazon MWS
     * processes the report request and when the report is completed,
@@ -30,6 +31,7 @@ object Actions {
     * Reports are retained for 90 days.
     */
   case object RequestReport extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -48,8 +50,8 @@ object Actions {
       val ps = Map(
           "Action"     -> toParameterValue,
           "ReportType" -> reportType.toParameterValue
-        ) ++ marketplaces.zipWithIndex.map(
-          t => s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
+        ) ++ marketplaces.zipWithIndex.map(t =>
+          s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
         )
       val ps2 = startDate.fold(ps)(sd => ps + ("StartDate" -> sd.toString))
       val ps3 = endDate.fold(ps2)(ed => ps2 + ("EndDate"   -> ed.toString))
@@ -97,11 +99,11 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       if (requestIds.isEmpty) {
-        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-            t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
+            s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
           ) ++
-          processing.zipWithIndex.map(
-            t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          processing.zipWithIndex.map(t =>
+            s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
           ) ++
           Map("MaxCount" -> max.toString)
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
@@ -120,6 +122,7 @@ object Actions {
     * the value of `HasNext` was true in that previous request.
     */
   case object GetReportRequestListByNextToken extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -143,6 +146,7 @@ object Actions {
     * Amazon MWS for processing.
     */
   case object GetReportRequestCount extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -165,11 +169,11 @@ object Actions {
         "Action"      -> toParameterValue,
         "Marketplace" -> marketPlace.toParameterValue
       )
-      val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
+          s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
         ) ++
-        processing.zipWithIndex.map(
-          t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+        processing.zipWithIndex.map(t =>
+          s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
         )
       val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
       to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
@@ -182,6 +186,7 @@ object Actions {
     * Cancels one or more report requests.
     */
   case object CancelReportRequests extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -207,11 +212,11 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       if (requestIds.isEmpty) {
-        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-            t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
+            s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
           ) ++
-          processing.zipWithIndex.map(
-            t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          processing.zipWithIndex.map(t =>
+            s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
           )
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
@@ -257,11 +262,11 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       if (requestIds.isEmpty) {
-        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-            t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
+            s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
           ) ++
-          processing.zipWithIndex.map(
-            t => s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          processing.zipWithIndex.map(t =>
+            s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
           ) ++
           Map("MaxCount" -> max.toString)
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
@@ -280,6 +285,7 @@ object Actions {
     * previous call.
     */
   case object GetReportListByNextToken extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -302,6 +308,7 @@ object Actions {
     * with a status of `_DONE_` and that are available for download.
     */
   case object GetReportCount extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -322,8 +329,8 @@ object Actions {
         "Action"      -> toParameterValue,
         "Marketplace" -> marketPlace.toParameterValue
       )
-      val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(
-          t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
+          s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
         )
       val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
       to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
@@ -337,6 +344,7 @@ object Actions {
     * returned report body.
     */
   case object GetReport extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -362,6 +370,7 @@ object Actions {
     * specified report type.
     */
   case object ManageReportSchedule extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -395,6 +404,7 @@ object Actions {
     * submitted to Amazon MWS for processing.
     */
   case object GetReportScheduleList extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -411,8 +421,8 @@ object Actions {
         "Action"      -> toParameterValue,
         "Marketplace" -> marketPlace.toParameterValue
       )
-      r ++ reportTypes.zipWithIndex.map(
-        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      r ++ reportTypes.zipWithIndex.map(t =>
+        s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
       )
     }
 
@@ -434,6 +444,7 @@ object Actions {
     * submitted to Amazon MWS.
     */
   case object GetReportScheduleCount extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       *
@@ -450,8 +461,8 @@ object Actions {
         "Action"      -> toParameterValue,
         "Marketplace" -> marketPlace.toParameterValue
       )
-      r ++ reportTypes.zipWithIndex.map(
-        t => s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+      r ++ reportTypes.zipWithIndex.map(t =>
+        s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
       )
     }
 
@@ -462,6 +473,7 @@ object Actions {
     * Updates the acknowledged status of one or more reports.
     */
   case object UpdateReportAcknowledgements extends Action {
+
     /**
       * Create the request parameters needed for the API action.
       * @param marketPlace  The marketplace of the reports.

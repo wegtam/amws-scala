@@ -16,6 +16,7 @@ import java.util.Locale
 import scala.util.Try
 
 object Request {
+
   /**
     * Build a parameters and values that are needed for every request.
     *
