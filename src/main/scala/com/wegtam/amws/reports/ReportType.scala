@@ -23,6 +23,7 @@ import scala.collection.immutable.Seq
   * @see http://docs.developer.amazonservices.com/en_US/reports/Reports_ReportType.html
   */
 sealed trait ReportType extends Product with Serializable {
+
   /**
     * The parameter value of the report type that must be used in the
     * query string.
@@ -51,6 +52,7 @@ object ReportType {
   * To avoid confusion they are grouped herein.
   */
 object SharedReports {
+
   /**
     * Tab-delimited flat file. Returns all orders placed in the specified
     * date range regardless of fulfillment channel or shipment status. This
@@ -101,6 +103,7 @@ object SharedReports {
   * Listing Reports
   */
 object ListingReports {
+
   /**
     * Tab-delimited flat file open listings report that contains the SKU,
     * ASIN, Price, and Quantity fields. For Marketplace and Seller Central
@@ -189,6 +192,7 @@ object ListingReports {
   * Order Reports
   */
 object OrderReports {
+
   /**
     * Tab-delimited flat file report that contains only orders that are not
     * confirmed as shipped. Can be requested or scheduled. For Marketplace
@@ -257,6 +261,7 @@ object OrderTracking {
   * Pending Order Reports
   */
 object PendingOrders {
+
   /**
     * Tab-delimited flat file report that can be requested or scheduled
     * that shows all pending orders. For all sellers.
@@ -286,6 +291,7 @@ object PendingOrders {
   * Performance Reports
   */
 object Performance {
+
   /**
     * Tab-delimited flat file that returns negative and neutral feedback
     * (one to three stars) from buyers who rated your seller performance.
@@ -308,6 +314,7 @@ object Performance {
   * Settlement Reports
   */
 object Settlement {
+
   /**
     * Tab-delimited flat file settlement report that is automatically
     * scheduled by Amazon; it cannot be requested through `RequestReport`.
@@ -342,6 +349,7 @@ object Settlement {
   * Fulfillment By Amazon (FBA) Sales Reports
   */
 object FBASales {
+
   /**
     * Tab-delimited flat file. Contains detailed order/shipment/item
     * information including price, address, and tracking data. You can
@@ -404,6 +412,7 @@ object FBASales {
   * Fulfillment By Amazon (FBA) Inventory Reports
   */
 object FBAInventory {
+
   /**
     * Tab-delimited flat file. Content updated in near real-time. For FBA
     * sellers only. For Marketplace and Seller Central sellers.
@@ -599,6 +608,7 @@ object FBAInventory {
   * Fulfillment By Amazon (FBA) Payments Reports
   */
 object FBAPayments {
+
   /**
     * Tab-delimited flat file. Contains the estimated Amazon Selling and
     * Fulfillment Fees for your FBA inventory with active offers. The
@@ -626,6 +636,7 @@ object FBAPayments {
   * Fulfillment By Amazon (FBA) Customer Concessions Reports
   */
 object FBACustomerConcessions {
+
   /**
     * Tab-delimited flat file. Contains customer returned items received at
     * an Amazon fulfillment center, including Return Reason and Disposition.
@@ -652,6 +663,7 @@ object FBACustomerConcessions {
   * Fulfillment By Amazon (FBA) Removals Reports
   */
 object FBARemovals {
+
   /**
     * Tab-delimited flat file. The report identifies sellable items that
     * will be 365 days or older during the next Long-Term Storage cleanup
@@ -697,6 +709,7 @@ object FBARemovals {
   * Sales Tax Reports
   */
 object SalesTax {
+
   /**
     * Tab-delimited flat file for tax-enabled US sellers. Content updated
     * daily. This report cannot be requested or scheduled. You must
@@ -714,6 +727,7 @@ object SalesTax {
   * Browse Tree Reports
   */
 object BrowseTree {
+
   /**
     * XML report that provides browse tree hierarchy information and node
     * refinement information for the Amazon retail website in any

@@ -20,6 +20,7 @@ import com.wegtam.amws.common.ParameterValue
   * @see http://docs.developer.amazonservices.com/en_US/reports/Reports_Schedule.html
   */
 sealed trait ScheduleType extends Product with Serializable {
+
   /**
     * The parameter value of the schedule type that must be used in the
     * query string.
@@ -30,6 +31,7 @@ sealed trait ScheduleType extends Product with Serializable {
 }
 
 object ScheduleType {
+
   /**
     * Delete a previously created report request schedule.
     */

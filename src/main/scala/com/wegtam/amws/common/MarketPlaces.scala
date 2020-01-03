@@ -14,6 +14,7 @@ import scala.collection.immutable.Seq
   * Amazon marketplaces.
   */
 sealed trait MarketPlace extends Product with Serializable {
+
   /**
     * Return the region that the market place belongs to.
     *
