@@ -55,7 +55,7 @@ lazy val library =
       val scalaCheckTools = "0.3.2"
       val scalaTest       = "3.0.8"
       val shapeless       = "2.3.2"
-      val yaidom          = "1.10.1"
+      val yaidom          = "1.10.2"
     }
     val akkaHttp        = "com.typesafe.akka"   %% "akka-http"                   % Version.akkaHttp
     val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit"           % Version.akkaHttp
