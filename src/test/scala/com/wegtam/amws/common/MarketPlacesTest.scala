@@ -9,12 +9,13 @@
 package com.wegtam.amws.common
 
 import com.wegtam.amws.common.MarketPlaces._
-import org.scalatest.{ MustMatchers, WordSpec }
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 import scala.collection.immutable.Seq
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class MarketPlacesTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
+class MarketPlacesTest extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks {
   private final val expectedIds = Table(
     ("Marketplace", "ID"),
     (BR, "A2Q3Y263D00KWC"),
@@ -64,9 +65,7 @@ class MarketPlacesTest extends WordSpec with MustMatchers with ScalaCheckPropert
 
   "region" must {
     "return the correct region of the marketplace" in {
-      forAll(expectedRegions) { (mp: MarketPlace, r: Region) =>
-        mp.region must be(r)
-      }
+      forAll(expectedRegions)((mp: MarketPlace, r: Region) => mp.region must be(r))
     }
   }
 }

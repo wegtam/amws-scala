@@ -9,10 +9,11 @@
 package com.wegtam.amws.reports.adt
 
 import com.wegtam.amws.reports.adt.ReportRequestInfoGenerators._
-import org.scalatest.{ MustMatchers, WordSpec }
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ReportRequestInfoTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
+class ReportRequestInfoTest extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks {
   private def toXmlString(r: ReportRequestInfo): String =
     s"""<ReportRequestInfo><ReportRequestId>${r.id}</ReportRequestId><ReportType>${r.reportType.toParameterValue}</ReportType><StartDate>${r.startDate.toString}</StartDate><EndDate>${r.endDate.toString}</EndDate><Scheduled>${r.scheduled.toString}</Scheduled><SubmittedDate>${r.submittedDate.toString}</SubmittedDate><ReportProcessingStatus>${r.status.toParameterValue}</ReportProcessingStatus>${r.generatedReportId
       .map(d => "<GeneratedReportId>" + d.toString + "</GeneratedReportId>")
@@ -25,9 +26,7 @@ class ReportRequestInfoTest extends WordSpec with MustMatchers with ScalaCheckPr
   "fromXmlString" when {
     "given invalid xml" must {
       "return an empty option" in {
-        forAll("input") { xml: String =>
-          ReportRequestInfo.fromXmlString(xml) must be(empty)
-        }
+        forAll("input") { xml: String => ReportRequestInfo.fromXmlString(xml) must be(empty) }
       }
     }
 

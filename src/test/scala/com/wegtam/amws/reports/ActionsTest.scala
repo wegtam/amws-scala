@@ -8,9 +8,10 @@
 
 package com.wegtam.amws.reports
 
-import org.scalatest.{ MustMatchers, WordSpec }
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ActionsTest extends WordSpec with MustMatchers {
+class ActionsTest extends AnyWordSpec with Matchers {
   "RequestReport" must {
     val a = Actions.RequestReport
 

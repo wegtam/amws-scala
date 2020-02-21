@@ -12,12 +12,13 @@ import java.net.URI
 
 import com.wegtam.amws.common.MarketPlaces._
 import com.wegtam.amws.common.Regions._
-import org.scalatest.{ MustMatchers, WordSpec }
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 import scala.collection.immutable.Seq
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class RegionsTest extends WordSpec with MustMatchers with ScalaCheckPropertyChecks {
+class RegionsTest extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks {
   private final val expectedEndpoints = Table(
     ("Region", "Endpoint"),
     (NorthAmerica, new URI("https://mws.amazonservices.com")),
@@ -39,9 +40,7 @@ class RegionsTest extends WordSpec with MustMatchers with ScalaCheckPropertyChec
 
   "endpoint" must {
     "return the correct region endpoint" in {
-      forAll(expectedEndpoints) { (r: Region, u: URI) =>
-        r.endPoint mustEqual u
-      }
+      forAll(expectedEndpoints)((r: Region, u: URI) => r.endPoint mustEqual u)
     }
   }
 
