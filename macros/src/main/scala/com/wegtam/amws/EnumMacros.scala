@@ -35,16 +35,17 @@ object EnumMacros {
     val symbol = weakTypeOf[A].typeSymbol
     if (symbol.isClass && symbol.asClass.isSealed && symbol.asClass.isTrait) {
       val cs = symbol.asClass.knownDirectSubclasses.toList
-      if (cs.forall(_.isModuleClass)) {
+      if (cs.forall(_.isModuleClass))
         c.Expr[Seq[A]] {
-          def sourceModuleRef(sym: Symbol) = Ident(
-            sym
-              .asInstanceOf[
-                scala.reflect.internal.Symbols#Symbol
-              ]
-              .sourceModule
-              .asInstanceOf[Symbol]
-          )
+          def sourceModuleRef(sym: Symbol) =
+            Ident(
+              sym
+                .asInstanceOf[
+                  scala.reflect.internal.Symbols#Symbol
+                ]
+                .sourceModule
+                .asInstanceOf[Symbol]
+            )
 
           Apply(
             Select(
@@ -54,11 +55,9 @@ object EnumMacros {
             cs.map(s => sourceModuleRef(s))
           )
         }
-      } else {
+      else
         c.abort(c.enclosingPosition, "All sub classes of the sealed trait must be objects!")
-      }
-    } else {
+    } else
       c.abort(c.enclosingPosition, "Value enumeration only works on sealed traits!")
-    }
   }
 }

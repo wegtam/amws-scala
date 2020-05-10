@@ -32,13 +32,14 @@ object SignRequest {
     * @param data The data that shall be signed.
     * @return Either an error or a string (utf-8) holding the base64 encoded signature.
     */
-  def sign(key: Array[Byte], data: Array[Byte]): Try[String] = Try {
-    val algo = "HmacSHA256"
-    val base = Base64.getEncoder
-    val hmac = Mac.getInstance(algo)
-    val skey = new SecretKeySpec(key, algo)
-    hmac.init(skey)
-    val sig = hmac.doFinal(data)
-    new String(base.encode(sig), StandardCharsets.UTF_8)
-  }
+  def sign(key: Array[Byte], data: Array[Byte]): Try[String] =
+    Try {
+      val algo = "HmacSHA256"
+      val base = Base64.getEncoder
+      val hmac = Mac.getInstance(algo)
+      val skey = new SecretKeySpec(key, algo)
+      hmac.init(skey)
+      val sig = hmac.doFinal(data)
+      new String(base.encode(sig), StandardCharsets.UTF_8)
+    }
 }

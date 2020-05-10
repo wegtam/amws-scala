@@ -54,7 +54,7 @@ object Actions {
           s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
         )
       val ps2 = startDate.fold(ps)(sd => ps + ("StartDate" -> sd.toString))
-      val ps3 = endDate.fold(ps2)(ed => ps2 + ("EndDate"   -> ed.toString))
+      val ps3 = endDate.fold(ps2)(ed => ps2 + ("EndDate" -> ed.toString))
       ps3
     }
 

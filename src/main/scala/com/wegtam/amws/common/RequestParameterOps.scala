@@ -16,9 +16,10 @@ trait RequestParameterOps[T] {
 
 object RequestParameterOps {
   implicit object RequestParameterOpsSingle extends RequestParameterOps[RequestParameter] {
-    override def toRequestParameters(t: RequestParameter): RequestParameters = Map(
-      t.name -> t.value
-    )
+    override def toRequestParameters(t: RequestParameter): RequestParameters =
+      Map(
+        t.name -> t.value
+      )
   }
 
   object syntax {
