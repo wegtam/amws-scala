@@ -32,12 +32,15 @@ lazy val amwsScala =
         library.akkaHttp,
         library.akkaStream,
         library.catsCore,
+        library.http4sDsl,
+        library.http4sBlazeClient,
         library.yaidom,
-        library.akkaHttpTestkit % Test,
-        library.scalaCheck      % Test,
-	library.scalaCheckTools % Test,
-        library.scalaTest       % Test,
-	library.scalaTestPlus   % Test
+        library.akkaHttpTestkit   % Test,
+        library.http4sBlazeServer % Test,
+        library.scalaCheck        % Test,
+        library.scalaCheckTools   % Test,
+        library.scalaTest         % Test,
+        library.scalaTestPlus     % Test
       ),
       wartremoverWarnings in (Compile, compile) ++= Warts.unsafe
     )
@@ -52,6 +55,7 @@ lazy val library =
       val akkaHttp        = "10.1.12"
       val akkaStream      = "2.6.5"
       val cats            = "2.1.1"
+      val http4s          = "0.21.4"
       val scalaCheck      = "1.14.3"
       val scalaCheckTools = "0.3.5"
       val scalaTest       = "3.1.2"
@@ -59,16 +63,19 @@ lazy val library =
       val shapeless       = "2.3.2"
       val yaidom          = "1.11.0"
     }
-    val akkaHttp        = "com.typesafe.akka"   %% "akka-http"                   % Version.akkaHttp
-    val akkaHttpTestkit = "com.typesafe.akka"   %% "akka-http-testkit"           % Version.akkaHttp
-    val akkaStream      = "com.typesafe.akka"   %% "akka-stream"                 % Version.akkaStream
-    val catsCore        = "org.typelevel"       %% "cats-core"                   % Version.cats
-    val scalaCheck      = "org.scalacheck"      %% "scalacheck"        	         % Version.scalaCheck
-    val scalaCheckTools = "com.47deg"           %% "scalacheck-toolbox-datetime" % Version.scalaCheckTools
-    val scalaTest       = "org.scalatest"       %% "scalatest"                   % Version.scalaTest
-    val scalaTestPlus   = "org.scalatestplus"   %% "scalacheck-1-14"             % Version.scalaTestPlus
-    val shapeless       = "com.chuusai"         %% "shapeless"                   % Version.shapeless
-    val yaidom          = "eu.cdevreeze.yaidom" %% "yaidom"                      % Version.yaidom
+    val akkaHttp          = "com.typesafe.akka"   %% "akka-http"                   % Version.akkaHttp
+    val akkaHttpTestkit   = "com.typesafe.akka"   %% "akka-http-testkit"           % Version.akkaHttp
+    val akkaStream        = "com.typesafe.akka"   %% "akka-stream"                 % Version.akkaStream
+    val catsCore          = "org.typelevel"       %% "cats-core"                   % Version.cats
+    val http4sBlazeServer = "org.http4s"          %% "http4s-blaze-server"         % Version.http4s
+    val http4sBlazeClient = "org.http4s"          %% "http4s-blaze-client"         % Version.http4s
+    val http4sDsl         = "org.http4s"          %% "http4s-dsl"                  % Version.http4s
+    val scalaCheck        = "org.scalacheck"      %% "scalacheck"                  % Version.scalaCheck
+    val scalaCheckTools   = "com.47deg"           %% "scalacheck-toolbox-datetime" % Version.scalaCheckTools
+    val scalaTest         = "org.scalatest"       %% "scalatest"                   % Version.scalaTest
+    val scalaTestPlus     = "org.scalatestplus"   %% "scalacheck-1-14"             % Version.scalaTestPlus
+    val shapeless         = "com.chuusai"         %% "shapeless"                   % Version.shapeless
+    val yaidom            = "eu.cdevreeze.yaidom" %% "yaidom"                      % Version.yaidom
   }
 
 // *****************************************************************************
@@ -82,34 +89,98 @@ lazy val settings =
   publishSettings ++
   scalafmtSettings
 
-lazy val commonSettings =
-  Seq(
-    scalaVersion in ThisBuild := "2.12.10",
-    crossScalaVersions := Seq(scalaVersion.value),
-    organization := "com.wegtam",
-    mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
-    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.10.3" cross CrossVersion.binary),
-    scalacOptions ++= Seq(
+def compilerSettings(sv: String) =
+  CrossVersion.partialVersion(sv) match {
+    case Some((2, 13)) =>
+      Seq(
+        "-deprecation",
+        "-explaintypes",
+        "-feature",
+        "-language:_",
+        "-unchecked",
+        "-Xcheckinit",
+        "-Xfatal-warnings",
+        "-Xlint:adapted-args",
+        "-Xlint:constant",
+        "-Xlint:delayedinit-select",
+        "-Xlint:doc-detached",
+        "-Xlint:inaccessible",
+        "-Xlint:infer-any",
+        "-Xlint:missing-interpolator",
+        "-Xlint:nullary-override",
+        "-Xlint:nullary-unit",
+        "-Xlint:option-implicit",
+        "-Xlint:package-object-classes",
+        "-Xlint:poly-implicit-overload",
+        "-Xlint:private-shadow",
+        "-Xlint:stars-align",
+        "-Xlint:type-parameter-shadow",
+        "-Ywarn-dead-code",
+        "-Ywarn-extra-implicit",
+        "-Ywarn-numeric-widen",
+        "-Ywarn-unused:implicits",
+        "-Ywarn-unused:imports",
+        "-Ywarn-unused:locals",
+        "-Ywarn-unused:params",
+        "-Ywarn-unused:patvars",
+        "-Ywarn-unused:privates",
+        "-Ywarn-value-discard",
+        "-Ycache-plugin-class-loader:last-modified",
+        "-Ycache-macro-class-loader:last-modified",
+        "-Ymacro-annotations" // Needed for Simulacrum
+      )
+    case _ =>
+      Seq(
       "-deprecation",
       "-encoding", "UTF-8",
+      "-explaintypes",
       "-feature",
+      "-language:_",
       "-target:jvm-1.8",
       "-unchecked",
+      "-Xcheckinit",
       "-Xfatal-warnings",
       "-Xfuture",
-      "-Xlint",
+      "-Xlint:adapted-args",
+      "-Xlint:by-name-right-associative",
+      "-Xlint:constant",
+      "-Xlint:delayedinit-select",
+      "-Xlint:doc-detached",
+      "-Xlint:inaccessible",
+      "-Xlint:infer-any",
+      "-Xlint:missing-interpolator",
+      "-Xlint:nullary-override",
+      "-Xlint:nullary-unit",
+      "-Xlint:option-implicit",
+      "-Xlint:package-object-classes",
+      "-Xlint:poly-implicit-overload",
+      "-Xlint:private-shadow",
+      "-Xlint:stars-align",
+      "-Xlint:type-parameter-shadow",
+      "-Xlint:unsound-match",
       "-Ydelambdafy:method",
       "-Yno-adapted-args",
       "-Ypartial-unification",
       "-Ywarn-numeric-widen",
       "-Ywarn-unused-import",
       "-Ywarn-value-discard"
-    ),
+    )
+  }
+
+lazy val commonSettings =
+  Seq(
+    scalaVersion in ThisBuild := "2.13.2",
+    crossScalaVersions := Seq(scalaVersion.value, "2.12.10"),
+    organization := "com.wegtam",
+    mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
+    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1"),
+    addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.11.0" cross CrossVersion.full),
+    scalacOptions ++= compilerSettings(scalaVersion.value),
     scalacOptions ++= {
       if (scalaVersion.value.startsWith("2.11"))
         Seq("-Xmax-classfile-name", "78")
       else
-	Seq()
+        Seq()
     },
     javacOptions ++= Seq(
       "-encoding", "UTF-8",
