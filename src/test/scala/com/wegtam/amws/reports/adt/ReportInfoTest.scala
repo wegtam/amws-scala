@@ -11,11 +11,13 @@ package com.wegtam.amws.reports.adt
 import java.time.OffsetDateTime
 
 import com.wegtam.amws.reports.ListingReports
-import org.scalatest.{ MustMatchers, WordSpec }
+
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 import scala.collection.immutable.Seq
 
-class ReportInfoTest extends WordSpec with MustMatchers {
+class ReportInfoTest extends AnyWordSpec with Matchers {
   "fromXmlString" when {
     "given valid xml" must {
       "return the correct ReportInfo" in {

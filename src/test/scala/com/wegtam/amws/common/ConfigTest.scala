@@ -11,9 +11,11 @@ package com.wegtam.amws.common
 import java.nio.charset.StandardCharsets
 
 import com.typesafe.config.ConfigFactory
-import org.scalatest.{ MustMatchers, WordSpec }
 
-class ConfigTest extends WordSpec with MustMatchers {
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
+class ConfigTest extends AnyWordSpec with Matchers {
   "getAccessKeyId" when {
     "setting is defined" must {
       "return the proper value" in {

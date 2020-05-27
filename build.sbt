@@ -36,7 +36,8 @@ lazy val amwsScala =
         library.akkaHttpTestkit % Test,
         library.scalaCheck      % Test,
 	library.scalaCheckTools % Test,
-        library.scalaTest       % Test
+        library.scalaTest       % Test,
+	library.scalaTestPlus   % Test
       ),
       wartremoverWarnings in (Compile, compile) ++= Warts.unsafe
     )
@@ -53,7 +54,8 @@ lazy val library =
       val cats            = "2.1.1"
       val scalaCheck      = "1.14.3"
       val scalaCheckTools = "0.3.5"
-      val scalaTest       = "3.0.8"
+      val scalaTest       = "3.1.2"
+      val scalaTestPlus   = "3.1.2.0"
       val shapeless       = "2.3.2"
       val yaidom          = "1.11.0"
     }
@@ -64,6 +66,7 @@ lazy val library =
     val scalaCheck      = "org.scalacheck"      %% "scalacheck"        	         % Version.scalaCheck
     val scalaCheckTools = "com.47deg"           %% "scalacheck-toolbox-datetime" % Version.scalaCheckTools
     val scalaTest       = "org.scalatest"       %% "scalatest"                   % Version.scalaTest
+    val scalaTestPlus   = "org.scalatestplus"   %% "scalacheck-1-14"             % Version.scalaTestPlus
     val shapeless       = "com.chuusai"         %% "shapeless"                   % Version.shapeless
     val yaidom          = "eu.cdevreeze.yaidom" %% "yaidom"                      % Version.yaidom
   }

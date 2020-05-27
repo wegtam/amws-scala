@@ -14,15 +14,15 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.{ Directives, Route }
 import akka.stream.Materializer
-import org.scalatest.{ AsyncWordSpec, BeforeAndAfterAll, MustMatchers }
+
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AsyncWordSpec
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class HttpClientProviderAkkaHttpTest
-    extends AsyncWordSpec
-    with MustMatchers
-    with BeforeAndAfterAll {
+class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with BeforeAndAfterAll {
   implicit private val system: ActorSystem        = ActorSystem()
   implicit private val materializer: Materializer = Materializer(system)
 
