@@ -51,7 +51,7 @@ object Actions {
           "Action"     -> toParameterValue,
           "ReportType" -> reportType.toParameterValue
         ) ++ marketplaces.zipWithIndex.map(t =>
-          s"MarketplaceIdList.Id.${t._2 + 1}" -> t._1.toParameterValue
+          s"MarketplaceIdList.Id.${(t._2 + 1).toString}" -> t._1.toParameterValue
         )
       val ps2 = startDate.fold(ps)(sd => ps + ("StartDate" -> sd.toString))
       val ps3 = endDate.fold(ps2)(ed => ps2 + ("EndDate" -> ed.toString))
@@ -100,16 +100,18 @@ object Actions {
       )
       if (requestIds.isEmpty) {
         val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
-            s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+            s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
           ) ++
           processing.zipWithIndex.map(t =>
-            s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+            s"ReportProcessingStatusList.Status.${(t._2 + 1).toString}" -> t._1.toParameterValue
           ) ++
           Map("MaxCount" -> max.toString)
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
       } else
-        r ++ requestIds.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+        r ++ requestIds.zipWithIndex.map(t =>
+          s"ReportRequestIdList.Id.${(t._2 + 1).toString}" -> t._1
+        )
     }
 
     override def toParameterValue: ParameterValue = "GetReportRequestList"
@@ -170,10 +172,10 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
-          s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+          s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
         ) ++
         processing.zipWithIndex.map(t =>
-          s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+          s"ReportProcessingStatusList.Status.${(t._2 + 1).toString}" -> t._1.toParameterValue
         )
       val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
       to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
@@ -213,15 +215,17 @@ object Actions {
       )
       if (requestIds.isEmpty) {
         val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
-            s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+            s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
           ) ++
           processing.zipWithIndex.map(t =>
-            s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+            s"ReportProcessingStatusList.Status.${(t._2 + 1).toString}" -> t._1.toParameterValue
           )
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("RequestedFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("RequestedToDate" -> d.toString))
       } else
-        r ++ requestIds.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+        r ++ requestIds.zipWithIndex.map(t =>
+          s"ReportRequestIdList.Id.${(t._2 + 1).toString}" -> t._1
+        )
     }
 
     override def toParameterValue: ParameterValue = "CancelReportRequests"
@@ -263,16 +267,18 @@ object Actions {
       )
       if (requestIds.isEmpty) {
         val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
-            s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+            s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
           ) ++
           processing.zipWithIndex.map(t =>
-            s"ReportProcessingStatusList.Status.${t._2 + 1}" -> t._1.toParameterValue
+            s"ReportProcessingStatusList.Status.${(t._2 + 1).toString}" -> t._1.toParameterValue
           ) ++
           Map("MaxCount" -> max.toString)
         val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
         to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
       } else
-        r ++ requestIds.zipWithIndex.map(t => s"ReportRequestIdList.Id.${t._2 + 1}" -> t._1)
+        r ++ requestIds.zipWithIndex.map(t =>
+          s"ReportRequestIdList.Id.${(t._2 + 1).toString}" -> t._1
+        )
     }
 
     override def toParameterValue: ParameterValue = "GetReportList"
@@ -330,7 +336,7 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       val r1: RequestParameters = r ++ reportTypes.zipWithIndex.map(t =>
-          s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+          s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
         )
       val r2: RequestParameters = from.fold(r1)(d => r1 + ("AvailableFromDate" -> d.toString))
       to.fold(r2)(d => r2 + ("AvailableToDate" -> d.toString))
@@ -422,7 +428,7 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       r ++ reportTypes.zipWithIndex.map(t =>
-        s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
       )
     }
 
@@ -462,7 +468,7 @@ object Actions {
         "Marketplace" -> marketPlace.toParameterValue
       )
       r ++ reportTypes.zipWithIndex.map(t =>
-        s"ReportTypeList.Type.${t._2 + 1}" -> t._1.toParameterValue
+        s"ReportTypeList.Type.${(t._2 + 1).toString}" -> t._1.toParameterValue
       )
     }
 
@@ -497,7 +503,7 @@ object Actions {
         "Action"       -> toParameterValue,
         "Marketplace"  -> marketPlace.toParameterValue,
         "Acknowledged" -> acknowledged.toString
-      ) ++ reportIds.zipWithIndex.map(t => s"ReportIdList.Id.${t._2 + 1}" -> t._1)
+      ) ++ reportIds.zipWithIndex.map(t => s"ReportIdList.Id.${(t._2 + 1).toString}" -> t._1)
     }
 
     override def toParameterValue: ParameterValue =

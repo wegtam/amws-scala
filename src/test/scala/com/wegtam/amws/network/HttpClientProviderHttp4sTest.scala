@@ -14,15 +14,21 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.{ Directives, Route }
 import akka.stream.Materializer
+import cats.effect._
+import org.http4s.client.blaze._
 
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AsyncWordSpec
 
 import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.global
 import scala.concurrent.duration._
 
-class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with BeforeAndAfterAll {
+class HttpClientProviderHttp4sTest extends AsyncWordSpec with Matchers with BeforeAndAfterAll {
+  implicit val cs: ContextShift[IO] = IO.contextShift(global)
+  implicit val timer: Timer[IO]     = IO.timer(global)
+  // TODO Switch to clean http4s integration testing.
   implicit private val system: ActorSystem        = ActorSystem()
   implicit private val materializer: Materializer = Materializer(system)
 
@@ -46,7 +52,7 @@ class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with Be
   }
 
   "HttpClientProvider" when {
-    "using AkkaHttp" when {
+    "using Http4s" when {
       "using get" when {
         "endpoint is not found" must {
           "return an error response" in {
@@ -61,11 +67,15 @@ class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with Be
             val uri = new URI(s"http://localhost:$port/get-me-wrong")
             val pld = AmwsRequestPayload(data = None)
 
-            val client = new HttpClientProviderAkkaHttp()
-            client.get(uri)(pld).value.map {
-              case Left(e)  => e.code must be(404)
-              case Right(d) => fail(s"The request must return an error instead of: $d")
+            val test = BlazeClientBuilder[IO](global).stream.flatMap { http4sClient =>
+              val client = new HttpClientProviderHttp4s[IO](http4sClient)
+              val check = client.get(uri)(pld).value.map {
+                case Left(e)  => e.code must be(404)
+                case Right(d) => fail(s"The request must return an error instead of: $d")
+              }
+              fs2.Stream.eval(check)
             }
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
           }
         }
 
@@ -83,11 +93,15 @@ class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with Be
             val uri = new URI(s"http://localhost:$port/get-me")
             val pld = AmwsRequestPayload(data = None)
 
-            val client = new HttpClientProviderAkkaHttp()
-            client.get(uri)(pld).value.map {
-              case Left(e)  => fail(s"Http request returned an error: $e")
-              case Right(d) => d.body must be(expectedResponse)
+            val test = BlazeClientBuilder[IO](global).stream.flatMap { http4sClient =>
+              val client = new HttpClientProviderHttp4s[IO](http4sClient)
+              val check = client.get(uri)(pld).value.map {
+                case Left(e)  => fail(s"Http request returned an error: $e")
+                case Right(d) => d.body must be(expectedResponse)
+              }
+              fs2.Stream.eval(check)
             }
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
           }
         }
       }
@@ -106,11 +120,15 @@ class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with Be
             val uri = new URI(s"http://localhost:$port/get-me-wrong")
             val pld = AmwsRequestPayload(data = None)
 
-            val client = new HttpClientProviderAkkaHttp()
-            client.post(uri)(pld).value.map {
-              case Left(e)  => e.code must be(404)
-              case Right(d) => fail(s"The request must return an error instead of: $d")
+            val test = BlazeClientBuilder[IO](global).stream.flatMap { http4sClient =>
+              val client = new HttpClientProviderHttp4s[IO](http4sClient)
+              val check = client.post(uri)(pld).value.map {
+                case Left(e)  => e.code must be(404)
+                case Right(d) => fail(s"The request must return an error instead of: $d")
+              }
+              fs2.Stream.eval(check)
             }
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
           }
         }
 
@@ -128,14 +146,19 @@ class HttpClientProviderAkkaHttpTest extends AsyncWordSpec with Matchers with Be
             val uri = new URI(s"http://localhost:$port/get-me")
             val pld = AmwsRequestPayload(data = None)
 
-            val client = new HttpClientProviderAkkaHttp()
-            client.post(uri)(pld).value.map {
-              case Left(e)  => fail(s"Http request returned an error: $e")
-              case Right(d) => d.body must be(expectedResponse)
+            val test = BlazeClientBuilder[IO](global).stream.flatMap { http4sClient =>
+              val client = new HttpClientProviderHttp4s[IO](http4sClient)
+              val check = client.post(uri)(pld).value.map {
+                case Left(e)  => fail(s"Http request returned an error: $e")
+                case Right(d) => d.body must be(expectedResponse)
+              }
+              fs2.Stream.eval(check)
             }
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
           }
         }
       }
     }
   }
+
 }
