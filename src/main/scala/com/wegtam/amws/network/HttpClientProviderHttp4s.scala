@@ -37,7 +37,7 @@ class HttpClientProviderHttp4s[F[_]: ConcurrentEffect](client: Client[F])
   @SuppressWarnings(Array("org.wartremover.warts.Any"))
   protected def performRequest(req: Request[F]): EitherT[F, AmwsError, AmwsResponse] =
     EitherT {
-      client.fetch(req) {
+      client.run(req).use {
         case Status.Successful(r) => r.as[String].map(b => Right(AmwsResponse(body = b)))
         case r                    => r.as[String].map(b => Left(AmwsError(code = r.status.code, details = Option(b))))
       }
