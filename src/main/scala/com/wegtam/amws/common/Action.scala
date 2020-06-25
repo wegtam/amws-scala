@@ -10,7 +10,6 @@ package com.wegtam.amws.common
 
 /**
   * A trait that must be extended by every implemented API action.
-  *
   */
 trait Action {
 
