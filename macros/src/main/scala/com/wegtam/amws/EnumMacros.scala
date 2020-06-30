@@ -9,7 +9,6 @@
 package com.wegtam.amws
 
 import scala.collection.immutable.Seq
-import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
 /**

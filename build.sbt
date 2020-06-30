@@ -107,7 +107,6 @@ def compilerSettings(sv: String) =
         "-Xlint:inaccessible",
         "-Xlint:infer-any",
         "-Xlint:missing-interpolator",
-        "-Xlint:nullary-override",
         "-Xlint:nullary-unit",
         "-Xlint:option-implicit",
         "-Xlint:package-object-classes",
@@ -169,7 +168,7 @@ def compilerSettings(sv: String) =
 
 lazy val commonSettings =
   Seq(
-    scalaVersion in ThisBuild := "2.13.2",
+    scalaVersion in ThisBuild := "2.13.3",
     crossScalaVersions := Seq(scalaVersion.value, "2.12.10"),
     organization := "com.wegtam",
     mappings.in(Compile, packageBin) += baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
