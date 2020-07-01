@@ -10,8 +10,6 @@ package com.wegtam.amws.network
 
 import java.net.URI
 
-import scala.language.higherKinds
-
 /**
   * A base for implementing http client providers.
   *

@@ -75,7 +75,7 @@ class HttpClientProviderHttp4sTest extends AsyncWordSpec with Matchers with Befo
               }
               fs2.Stream.eval(check)
             }
-            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture()
           }
         }
 
@@ -101,7 +101,7 @@ class HttpClientProviderHttp4sTest extends AsyncWordSpec with Matchers with Befo
               }
               fs2.Stream.eval(check)
             }
-            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture()
           }
         }
       }
@@ -128,7 +128,7 @@ class HttpClientProviderHttp4sTest extends AsyncWordSpec with Matchers with Befo
               }
               fs2.Stream.eval(check)
             }
-            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture()
           }
         }
 
@@ -154,7 +154,7 @@ class HttpClientProviderHttp4sTest extends AsyncWordSpec with Matchers with Befo
               }
               fs2.Stream.eval(check)
             }
-            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture
+            test.compile.last.map(_.getOrElse(fail("Test not run properly!"))).unsafeToFuture()
           }
         }
       }

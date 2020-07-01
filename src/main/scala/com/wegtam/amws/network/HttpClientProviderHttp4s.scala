@@ -18,8 +18,6 @@ import org.http4s.client._
 import org.http4s.headers._
 import org.http4s.MediaType
 
-import scala.language.higherKinds
-
 /**
   * The implementation of a [[HttpClientProvider]] using http4s.
   *
